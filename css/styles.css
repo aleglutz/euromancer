@@ -121,7 +121,7 @@ h1 {
    line-height 1 — полублоки стыкуются без щелей */
 header h1.post-figlet pre {
   font-family: 'IBM_VGA_8x16', monospace;
-  font-size: clamp(6px, calc(100cqw / (var(--cols, 80) * 0.5)), 20px);
+  font-size: min(calc(100cqw / (var(--cols, 80) * 0.5)), 20px);
   line-height: 1;
   min-height: 6em;   /* forgotex: 5–6 строк — резервируем 6, nav не прыгает между страницами */
   color: var(--fg-dim);
