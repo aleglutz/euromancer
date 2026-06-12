@@ -183,7 +183,7 @@ Role-based design tokens on `:root` — the theme switches in one place:
 
 - `--bg` / `--bg-warm` / `--border` — paper: warm off-white `#f5f0e6` family
 - `--fg` / `--fg-dim` / `--fg-faint` — ink: `#1a1a18` family
-- `--accent` / `--accent-faint` — red ribbon `#cc3333`
+- `--accent` / `--accent-faint` — blue ribbon `#2f6f9c`, after the RWR Kleine Galerie Wurzen poster (1989)
 
 **Dark mode** = `.euromancer` class on `<body>`: a single block overrides the role tokens with the terminal palette (`#0d1117` bg, `#8b949e` fg). No separate `--terminal-*` token layer — the whole site is a terminal. The dark block exists in CSS; no toggle is wired yet.
 
@@ -193,7 +193,7 @@ Links render with terminal brackets `[link]` via `a::before/::after`; the nav pa
 
 Layout: one column — `header`, `main`, `footer` share `max-width: 960px`, left-anchored (TUI, not centered print), symmetric `--space-md` side padding. Headline `pre` reserves `min-height: 6em` so the nav sits at the same height on every page regardless of ASCII descenders.
 
-TUI furniture: the nav is a Midnight Commander / lynx-style menu bar — bracketed red links (same affordance as every other link on the site), current item in inverse video, no brackets: `[home] texts+images` on the archive, `[home] [texts+images] Triptych_A.md` on a post. One line, every element either navigates or marks "you are here". The footer is an inverse-video statusline (tmux-style). Prompt cosplay in navigation was tried and removed — hiding links inside a fake shell prompt killed discoverability (clig.dev: human-first beats clever).
+TUI furniture: the nav is a Midnight Commander / lynx-style menu bar — bracketed accent links (same affordance as every other link on the site), current item in inverse video, no brackets: `[home] texts+images` on the archive, `[home] [texts+images] Triptych_A.md` on a post. One line, every element either navigates or marks "you are here". The footer is an inverse-video statusline (tmux-style). Prompt cosplay in navigation was tried and removed — hiding links inside a fake shell prompt killed discoverability (clig.dev: human-first beats clever).
 
 ### ASCII headlines (tdfiglet)
 

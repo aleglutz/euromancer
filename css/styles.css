@@ -1,6 +1,6 @@
 /* ═════
    euromancer · Site Stylesheet
-   After Ruth Wolf-Rehfeldt's typewritings: black + red ribbon on paper, 
+   After Ruth Wolf-Rehfeldt's typewritings: black + blue ribbon on paper,
    systematic patterns, the poetry of typed characters as visual form.
    ═════ */
 
@@ -65,9 +65,9 @@ ul, ol {
   --fg-dim: #4a4a46;
   --fg-faint: #8a8a84;
 
-  /* Red ribbon */
-  --accent: #cc3333;
-  --accent-faint: rgba(204, 51, 51, 0.15);
+  /* Blue ribbon — как на афише RWR (Kleine Galerie Wurzen, 1989) */
+  --accent: #2f6f9c;
+  --accent-faint: rgba(47, 111, 156, 0.15);
 
   /* Spacing */
   --space-xs: 8px;
@@ -173,7 +173,7 @@ small {
   font-size: 0.8rem;
   color: var(--fg-faint);
 }
-/* Red emphasis — typewriter red ribbon shift */
+/* Accent emphasis — typewriter ribbon shift (.red — историческое имя) */
 .red, em {
   color: var(--accent);
   font-style: normal;
