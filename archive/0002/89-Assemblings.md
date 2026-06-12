@@ -1,10 +1,12 @@
 ---
-title: Triptych A
+title: 89 Assemblings
 date: 2026-06-12
 status: ready
 templateEngineOverride: njk
 ---
 <!-- slide:typewriting -->
+
+An ongoing dedication to Ruth Wolf-Rehfeldt, East-German mother of ACiD and other great ASCII-artists.
 
 <div class="typewriting">
 <pre>
