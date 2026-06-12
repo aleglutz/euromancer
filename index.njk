@@ -9,15 +9,10 @@
 <body> 
   <header>
     <p class="last-login">Last login: <ac>{{ null | renderDate }}</ac> on ttys000</p>
-    <h1>
-<pre>
-░█▀▀░█░█░█▀▄░█▀█░█▄█░█▀█░█▀█░█▀▀░█▀▀░█▀▄
-░█▀▀░█░█░█▀▄░█░█░█░█░█▀█░█░█░█░░░█▀▀░█▀▄
-░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀░▀░▀░▀░▀▀▀░▀▀▀░▀░▀
-</pre>
-     </h1>
+    {% set headline = "euromancer" | tdfiglet("forgotex") %}
+    <h1 class="post-figlet" style="--cols: {{ headline | maxcols }}"><pre>{{ headline }}</pre></h1>
 <nav>
-    <span class="nav-tilde">~</span><span class="nav-sep">/</span><a href="index.html" class="active">home</a><span class="nav-sep">/</span><a href="archive/index.html">archive</a>
+    <span class="nav-tilde">~</span><span class="nav-sep">/</span><a href="{{ '/' | url }}" class="active">home</a><span class="nav-sep">/</span><a href="{{ '/archive/' | url }}">texts+images</a>
 </nav>
   </header>
   <main>

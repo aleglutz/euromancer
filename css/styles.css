@@ -5,6 +5,13 @@
    ═════ */
 
 /* ── Fonts ── */
+@font-face { 
+  font-family:'iA Writer Mono';
+  src:url('../assets/fonts/iAWriterMonoS-Regular.woff') format('woff');
+  font-weight:400; 
+  font-style:normal; 
+  font-display:swap; 
+}
 @font-face {
   font-family: 'Erica Type';
   src: url('../assets/fonts/EricaType.woff') format('woff');
@@ -34,6 +41,9 @@
   font-display: swap;
 }
 /* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 h1, h2, h3, h4, h5, h6,
 p, pre, ul, ol, figure, blockquote {
   margin: 0;
@@ -46,23 +56,18 @@ ul, ol {
 /* ── Root variables ── */
 :root {
   /* Paper — warm off-white, like aged typewriter stock */
-  --paper: #f5f0e6;
-  --paper-warm: #ede7d9;
-  --paper-dark: #e4ddd0;
+  --bg: #f5f0e6;
+  --bg-warm: #ede7d9;
+  --border: #e4ddd0;
   
   /* Ink — typewriter ribbon */
-  --ink: #1a1a18;
-  --ink-light: #4a4a46;
-  --ink-faint: #8a8a84;
+  --fg: #1a1a18;
+  --fg-dim: #4a4a46;
+  --fg-faint: #8a8a84;
 
   /* Red ribbon */
-  --red: #cc3333;
-  --red-faint: rgba(204, 51, 51, 0.15);
-
-  /* Terminal (for euromancer post pages) */
-  --terminal-bg: #0d1117;
-  --terminal-text: #8b949e;
-  --terminal-bright: #c9d1d9;
+  --accent: #cc3333;
+  --accent-faint: rgba(204, 51, 51, 0.15);
 
   /* Spacing */
   --space-xs: 8px;
@@ -75,50 +80,51 @@ ul, ol {
   --measure: 680px;
 }
 
+/* ── Dark mode — .euromancer на <body> переключает роли ── */
+body.euromancer {
+  --bg: #0d1117;
+  --bg-warm: #161b22;
+  --border: #21262d;
+  --fg: #8b949e;
+  --fg-dim: #c9d1d9;
+  --fg-faint: #484f58;
+}
+
 /* ── Body ── */
 body {
+  margin: 0;
   font-family: "Cascadia Mono", monospace;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
   line-height: 1.7;
-  color: var(--ink);
-  background: var(--paper);
+  color: var(--fg);
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
 }
 
 .last-login {
-  max-width: 960px;
   padding-top: var(--space-sm);
   font-size: 14px;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
 }
 
 /* ── Typography ── */
 
 h1 {
-  font-family: 'Cascadia Mono', monospace;
-  font-size: clamp(12px, 3.5cqw, 30px);
-  line-height: 1.1;
-  letter-spacing: 0;
-  font-weight: 400;
-  color: var(--ink-faint);
   margin: 0;
   overflow: hidden;
 }
 
-h1 pre {
-  font-family: inherit;
-  margin: 0;
-  white-space: pre;
-}
-
-/* Post page: figlet header — wider than n_euromancer logo, needs tighter clamp */
+/* tdfiglet: --cols — реальная ширина арта (задаётся шаблоном), 0.5em —
+   advance IBM VGA (8/16); строка заполняет контейнер на любом шрифте/заголовке.
+   line-height 1 — полублоки стыкуются без щелей */
 header h1.post-figlet pre {
-  font-family: 'Cascadia Mono', monospace;
-  font-size: clamp(8px, 2.2cqw, 22px);
-  line-height: 1.1;
-  color: var(--ink);
+  font-family: 'IBM_VGA_8x16', monospace;
+  font-size: clamp(6px, calc(100cqw / (var(--cols, 80) * 0.5)), 20px);
+  line-height: 1;
+  min-height: 6em;   /* forgotex: 5–6 строк — резервируем 6, nav не прыгает между страницами */
+  color: var(--fg-dim);
   margin: 0;
   white-space: pre;
   overflow: hidden;
@@ -130,7 +136,7 @@ h2 {
     line-height: 1.3;
     letter-spacing: 0.05em;
     font-weight: 500;
-    color: var(--red);
+    color: var(--accent);
     margin-bottom: var(--space-sm);
 }
 
@@ -138,65 +144,57 @@ h3 {
     font-family: 'IBM_VGA_8x16';
     font-size: 18px;
     font-weight: 500;
-    color: var(--ink-light);
+    color: var(--fg-dim);
     margin-bottom: var(--space-sm);
 }
-
-/* cqw chosen over transform:scale(): scale() doesn't affect layout
-   flow so the element keeps its original box, requiring awkward height
-   hacks. With container-type on <header>, 1cqw = 1% of header's
-   rendered width (capped at 960px by max-width), so the ASCII scales
-   proportionally at every breakpoint without ever exceeding its
-   container — no floor minimum to cause overflow on narrow viewports.
-   3.9cqw fills ~95% of the container (empirically calibrated from
-   DevTools: ASCII = 543px at 2.4cqw, scale factor = 3.9/2.4 = 1.625,
-   rendered width ≈ 882px vs 928px content — all characters visible). */
 
 p {
   margin-bottom: var(--space-xs);
   max-width: var(--measure);
 }
 a {
-  color: var(--red);
+  color: var(--accent);
   text-decoration: none;
-  border-bottom: 0px solid var(--red-faint);
+  border-bottom: 0px solid var(--accent-faint);
   transition: border-color 0.2s;
 }
 ac {
-  color: var(--ink-light);
+  color: var(--fg-dim);
   text-decoration: none;
 }
 a:hover {
-  border-bottom-color: var(--red);
+  border-bottom-color: var(--accent);
 }
+/* Терминальные скобки [текст] вокруг ссылок (из tui-черновика);
+   nav-путь и карточки архива — без скобок */
+a::before { content: "["; }
+a::after { content: "]"; }
+nav a::before, nav a::after { content: none; }
 small {
   font-size: 0.8rem;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
 }
 /* Red emphasis — typewriter red ribbon shift */
 .red, em {
-  color: var(--red);
+  color: var(--accent);
   font-style: normal;
 }
 
-header {
-  padding-left: var(--space-md);
-  padding-bottom: 0;
+/* единая колонка: один max-width, симметричные поля, по центру окна */
+header, main, footer {
   max-width: 960px;
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+header {
   container-type: inline-size;
 }
 
-main {
-  max-width: 960px;
-  padding-left: var(--space-md);
-}
-
 footer {
-  max-width: 960px;
-  padding: var(--space-md);
-  padding-top: var(--space-md);
+  padding-block: var(--space-md);
   font-size: 0.8rem;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
 }
 
 /* ── Section ── */
@@ -215,18 +213,18 @@ nav {
 }
 .nav-tilde,
 .nav-sep {
-  color: var(--ink-faint);
+  color: var(--fg-faint);
 }
 nav a {
-  color: var(--ink-faint);
+  color: var(--fg-faint);
   border-bottom: none;
   text-decoration: none;
 }
 nav a:hover {
-  color: var(--ink);
+  color: var(--fg);
 }
 nav .active {
-  color: var(--red);
+  color: var(--accent);
 }
 
 
@@ -268,18 +266,17 @@ nav .active {
 }
 
 /* ── Responsive ── */
-@media (max-width: 640px) { 
-	body { font-size: 13px; } 
-	header, 
-	main, 
-	nav, 
-	.last-login, 
-	footer { 
-		padding-left: var(--space-xs); 
-		padding-right: var(--space-sm); 
-	} 
-	
-	section { margin-bottom: var(--space-md); } 
+@media (max-width: 640px) {
+	body { font-size: 13px; }
+	header,
+	main,
+	footer {
+		padding-inline: var(--space-sm);
+	}
+
+	.typewriting { font-size: 11px; }
+
+	section { margin-bottom: var(--space-md); }
 	
 	.row-with-media { 
 		grid-template-columns: 1fr; 
@@ -295,80 +292,23 @@ nav .active {
 		width: 100%; 
 	} 
 }
-/* ── Cards grid (planned for archive v2 — see CLAUDE.md roadmap) ── */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-md);
-  margin-top: var(--space-md);
+/* ── Post list (архив, в духе cDc: дата - [ссылка]) ── */
+.post-list li {
+  margin-bottom: var(--space-xs);
 }
 
-.card {
-  background: var(--paper-warm);
-  border: 1px solid var(--paper-dark);
-  overflow: hidden;
-  transition: border-color 0.2s;
-}
-
-.card:hover {
-  border-color: var(--red-faint);
-}
-
-.card img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.card-body {
-  padding: var(--space-sm);
-}
-
-.card-body h3 {
-  margin-bottom: 4px;
-}
-
-.card-body small {
-  display: block;
-}
-
-/* ── Post page (light mode — article view) ── */
-article.post {
-  max-width: var(--measure);
-}
-
-article.post img {
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: var(--space-md) 0;
-}
-
-article.post .meta {
-  font-size: 0.8rem;
-  color: var(--ink-faint);
-  margin-bottom: var(--space-md);
-}
-
-/* ── Tags ── */
-.tag {
-  display: inline-block;
-  font-size: 0.75rem;
-  color: var(--ink-faint);
-  border: 1px solid var(--paper-dark);
-  padding: 2px 8px;
-  margin-right: 4px;
-  margin-bottom: 4px;
+.post-list time {
+  color: var(--fg-faint);
 }
 
 .topics a {
-  color: var(--ink-faint);
+  color: var(--fg-faint);
   border-bottom: none;
   text-decoration: none;
 }
 
 .topics a:hover {
-  color: var(--ink);
+  color: var(--fg);
 }
 
 /* ── Slides ──────────────────────────────── */
@@ -412,21 +352,22 @@ article.post .meta {
   line-height: 1.2;
   white-space: pre;          /* не переносим строки — ASCII сломается */
   overflow-x: auto;          /* на узких экранах — горизонтальная прокрутка */
-  color: var(--ink);
+  color: var(--fg);
 }
 
 .slide--cover code {
   display: block;
   font-size: 14px;
   white-space: pre-wrap;     /* переносим длинные строки по словам */
-  color: var(--ink);
+  color: var(--fg);
 }
 
+/* светлый текст поверх фоновой фотографии — от темы не зависит */
 .slides section.slide--cover {
   aspect-ratio: 1 / 1;
   background-size: cover;
   background-position: center;
-  color: var(--terminal-bright);
+  color: #c9d1d9;
 }
 
 .slide--cover .subtitle,
@@ -438,8 +379,8 @@ article.post .meta {
 
 .slide--cover pre,
 .slide--cover code {
-  color: var(--terminal-bright);
-  text-shadow: 0 0 8px var(--terminal-bg);
+  color: #c9d1d9;
+  text-shadow: 0 0 8px #0d1117;
 }
 
 /* ── slide:text — длинный текст ── */
@@ -449,13 +390,13 @@ article.post .meta {
   line-height: 1.7;
   white-space: pre-wrap;     /* переносим длинные строки по словам */
   max-width: var(--measure);
-  color: var(--ink);
+  color: var(--fg);
 }
 
 .slide--text code {
   display: block;
   font-size: 13px;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
 }
 
 /* ── slide:image ── */
@@ -473,7 +414,7 @@ article.post .meta {
 .slide--image code {
   display: block;
   font-size: 13px;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
 }
 
 /* ── slide:combo — текст + картинка стеком ── */
@@ -486,7 +427,7 @@ article.post .meta {
   font-size: 14px;
   line-height: 1.7;
   white-space: pre-wrap;
-  color: var(--ink);
+  color: var(--fg);
 }
 
 .slide--combo img {
@@ -499,7 +440,43 @@ article.post .meta {
 .slide--combo code {
   display: block;
   font-size: 13px;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
+}
+
+/* ── slide:typewriting — коллаж: текст-сетка + абсолютные картинки ── */
+
+.slides section.slide--typewriting {
+  max-width: none;       /* коллаж шире обычного слайда — не зажимаем в 540px */
+  aspect-ratio: auto;
+}
+
+.typewriting {
+  position: relative;
+  width: max-content;
+  margin: 0;
+  font-family: var(--tw-font, 'IBM_VGA_8x16');
+  font-size: var(--tw-size, 20px);
+  line-height: var(--tw-lh, 1);
+}
+
+
+
+.typewriting pre {
+  margin: 0;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+.slides section.slide--typewriting > :last-child {
+  margin-top: var(--space-sm);
+}
+
+.typewriting img {
+  position: absolute;
+  left: calc(var(--col) * 1ch);
+  top: calc(var(--row) * 1lh);
+  width: calc(var(--w) * 1ch);
+  margin: 0;
 }
 
 /* ── Responsive ── */
@@ -520,7 +497,7 @@ article.post .meta {
    ═════ */
 
 body.render-mode {
-  background: var(--paper);
+  background: var(--bg);
   margin: 0;
   padding: 0;
 }
@@ -541,7 +518,7 @@ body.render-mode header .last-login {
   max-width: none;
   padding-top: 0;
   font-size: 20px;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
 }
 
 body.render-mode header h1 {
@@ -552,7 +529,7 @@ body.render-mode header h1 pre {
   font-family: 'Cascadia Mono', monospace;
   font-size: 22px;
   line-height: 1.1;
-  color: var(--ink);
+  color: var(--fg);
   margin: var(--space-sm) 0 0 0;
   white-space: pre;
 }
@@ -578,7 +555,7 @@ body.render-mode .slides section.slide {
   padding: 80px;
   margin: 0;
   box-sizing: border-box;
-  background: var(--paper);
+  background: var(--bg);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -615,7 +592,7 @@ body.render-mode .slide--speech p {
   font-family: "Cascadia Mono", monospace;
   font-size: 36px;
   line-height: 1.45;
-  color: var(--ink);
+  color: var(--fg);
   margin: 0 0 var(--space-md) 0;
   max-width: none;
 }
@@ -625,14 +602,14 @@ body.render-mode .slide--quote p {
   font-family: "Cascadia Mono", monospace;
   font-size: 26px;
   line-height: 1.5;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
   margin: 0 0 var(--space-md) 0;
 }
 body.render-mode .slide--quote h3 {
   font-family: "Cascadia Mono", monospace;
   font-size: 44px;
   line-height: 1.35;
-  color: var(--ink);
+  color: var(--fg);
   font-weight: 400;
   margin: 0;
   max-width: none;
@@ -643,13 +620,13 @@ body.render-mode .slide--text p {
   font-family: "Cascadia Mono", monospace;
   font-size: 32px;
   line-height: 1.45;
-  color: var(--ink);
+  color: var(--fg);
   margin: 0 0 var(--space-md) 0;
   max-width: none;
 }
 body.render-mode .slide--text strong {
   font-weight: 400;
-  color: var(--red);
+  color: var(--accent);
 }
 
 /* slide:combo — текст + картинка */
@@ -657,7 +634,7 @@ body.render-mode .slide--combo p {
   font-family: "Cascadia Mono", monospace;
   font-size: 28px;
   line-height: 1.45;
-  color: var(--ink);
+  color: var(--fg);
   margin: 0 0 var(--space-md) 0;
   max-width: none;
 }
@@ -677,7 +654,7 @@ body.render-mode .slide--image code,
 body.render-mode .slide--combo code {
   font-family: "Cascadia Mono", monospace;
   font-size: 22px;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
   display: block;
 }
 
@@ -688,11 +665,11 @@ body.render-mode .slide-prompt {
   left: var(--space-md);
   font-family: "Cascadia Mono", monospace;
   font-size: 18px;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
   user-select: none;
 }
-body.render-mode .slide-prompt .prompt-host { color: var(--ink-light); }
-body.render-mode .slide-prompt .prompt-sign { color: var(--red); }
+body.render-mode .slide-prompt .prompt-host { color: var(--fg-dim); }
+body.render-mode .slide-prompt .prompt-sign { color: var(--accent); }
 
 body.render-mode .slide-num {
   display: block;
@@ -701,7 +678,7 @@ body.render-mode .slide-num {
   right: var(--space-md);
   font-family: "Cascadia Mono", monospace;
   font-size: 18px;
-  color: var(--ink-faint);
+  color: var(--fg-faint);
   user-select: none;
 }
 
@@ -709,12 +686,12 @@ body.render-mode .slide--cover .subtitle {
   font-family: "Cascadia Mono", monospace;
   font-size: 32px;
   margin-top: var(--space-md);
-  color: var(--ink);
+  color: var(--fg);
 }
 
 body.render-mode .slide--cover .topics {
   font-family: "Cascadia Mono", monospace;
   font-size: 24px;
   margin-top: var(--space-xs);
-  color: var(--ink-faint);
+  color: var(--fg-faint);
 }

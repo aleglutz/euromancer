@@ -9,9 +9,10 @@
 <body>
   <header>
     <p class="last-login">Last login: <ac>{{ null | renderDate }}</ac> on ttys000</p>
-    <h1 class="post-figlet"><pre>{{ title | figlet(cover_font or "Slant") }}</pre></h1>
+    {% set headline = title | tdfiglet(cover_font or "forgotex") %}
+    <h1 class="post-figlet" style="--cols: {{ headline | maxcols }}"><pre>{{ headline }}</pre></h1>
     <nav>
-      <span class="nav-tilde">~</span><span class="nav-sep">/</span><a href="{{ '/' | url }}">home</a><span class="nav-sep">/</span><a href="{{ '/archive/' | url }}">archive</a><span class="nav-sep">/</span><span class="active">{{ title }}</span>
+      <span class="nav-tilde">~</span><span class="nav-sep">/</span><a href="{{ '/' | url }}">home</a><span class="nav-sep">/</span><a href="{{ '/archive/' | url }}">texts+images</a><span class="nav-sep">/</span><span class="active">{{ title }}</span>
     </nav>
   </header>
 
@@ -19,6 +20,7 @@
     {% set parentUrl = page.url | replace(page.fileSlug + '/', '') %}
     {% set attachmentsUrl = (parentUrl + 'attachments/') | url %}
     <article class="slides">
+      {% if subtitle or tags or cover_image %}
       <section class="slide slide--cover"{% if cover_image %} style="background-image: url('{{ attachmentsUrl }}{{ cover_image }}')"{% endif %}>
         <p class="subtitle">{{ subtitle }}</p>
         <p class="topics">topics:
@@ -27,6 +29,7 @@
           {% endfor %}
         </p>
       </section>
+      {% endif %}
       {{ content | safe }}
     </article>
   </main>
@@ -39,5 +42,6 @@
       document.body.classList.add("render-mode");
     }
   </script>
+  <script src="{{ '/assets/js/collage-editor.js' | url }}" defer></script>
 </body>
 </html>

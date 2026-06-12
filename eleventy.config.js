@@ -1,4 +1,5 @@
 import figlet from "figlet";
+import { execFileSync } from "node:child_process";
 export default function(eleventyConfig) {
     const pathPrefix = "/euromancer/";
     eleventyConfig.addPassthroughCopy("css");
@@ -6,6 +7,33 @@ export default function(eleventyConfig) {
     eleventyConfig.addPassthroughCopy("archive/**/attachments/**");
     eleventyConfig.addFilter("figlet", function (text, font = "Slant") {
         return figlet.textSync(text, { font });
+});
+    eleventyConfig.addFilter("maxcols", function (s) {
+        return Math.max(...String(s).split("\n").map((l) => [...l].length));
+});
+    eleventyConfig.addFilter("tdfiglet", function (text, font = "corosv2x") {
+        const render = (s) => execFileSync("tdfiglet", ["-f", `${font}.tdf`, "-w", "200", s], { encoding: "utf8" })
+            .replace(/\x1b\[[0-9;]*m/g, "")   // ANSI-цвета не нужны в HTML
+            .replace(/[ \t]+$/gm, "")
+            .replace(/^\n+|\n+$/g, "");
+        try {
+            const parts = String(text).split("+");
+            if (parts.length === 1) return render(text);
+            // в tdf-шрифтах нет глифа "+" — рисуем свой и склеиваем построчно
+            const PLUS = ["        ", "  ▄▄    ", "▄▄██▄▄  ", "▀▀██▀▀  ", "  ▀▀    "];
+            const blocks = parts.map((p) => {
+                const lines = render(p).split("\n");
+                const w = Math.max(...lines.map((l) => l.length));
+                return { lines, w };
+            });
+            const h = Math.max(PLUS.length, ...blocks.map((b) => b.lines.length));
+            return Array.from({ length: h }, (_, i) =>
+                blocks.map((b) => (b.lines[i] || "").padEnd(b.w + 2)).join(PLUS[i] || " ".repeat(8))
+            ).join("\n").replace(/[ \t]+$/gm, "");
+        } catch {
+            // нет бинаря (или шрифта) — деградируем в classic figlet
+            return figlet.textSync(text, { font: "Slant" });
+        }
 });
     eleventyConfig.addCollection("posts", function (collectionApi) {
         return collectionApi

@@ -17,29 +17,21 @@ layout: false
          const options = { weekday: 'short', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
          document.getElementById('login-time').textContent = now.toLocaleString('en-US', options);
       </script>
-    <h1>
-<pre>
-░█▀█░░░░░█▀▀░█░█░█▀▄░█▀█░█▄█░█▀█░█▀█░█▀▀░█▀▀░█▀▄
-░█░█░░░░░█▀▀░█░█░█▀▄░█░█░█░█░█▀█░█░█░█░░░█▀▀░█▀▄
-░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀░▀░▀░▀░▀▀▀░▀▀▀░▀░▀
-</pre>
-     </h1>
+    {% set headline = "texts+images" | tdfiglet("forgotex") %}
+    <h1 class="post-figlet" style="--cols: {{ headline | maxcols }}"><pre>{{ headline }}</pre></h1>
 <nav class="path">
-  <span class="nav-tilde">~<span class="nav-sep">/</span><a href="{{ '/' | url }}">home</a><span class="nav-sep">/</span><a href="{{ '/archive/' | url }}" class="active">archive</a>
+  <span class="nav-tilde">~<span class="nav-sep">/</span><a href="{{ '/' | url }}">home</a><span class="nav-sep">/</span><a href="{{ '/archive/' | url }}" class="active">texts+images</a>
 </nav>
   </header>
   <main>
     <section>
-      <div class="cards">
-        <ul class="post-list">
-            {% for post in collections.posts %}
-                <li>
-                    <a href="{{ post.url | url }}">{{ post.data.title }}</a>
-                    <small>{{ post.data.date | date }}</small>
-                </li>
-            {% endfor %}
-        </ul>
-      </div>
+      <ul class="post-list">
+        {% for post in collections.posts %}
+          {% if post.data.status == "ready" %}
+            <li><time datetime="{{ post.data.date | date }}">{{ post.data.date | date }}</time> - <a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
     </section>
   </main>
 

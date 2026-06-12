@@ -27,6 +27,12 @@ jobs:
 
       - run: npm ci
 
+      - name: Install tdfiglet
+        run: |
+          git clone --depth 1 https://github.com/tat3r/tdfiglet /tmp/tdfiglet
+          make -C /tmp/tdfiglet
+          sudo make -C /tmp/tdfiglet install
+
       - run: npx @11ty/eleventy
 
       - uses: actions/upload-pages-artifact@v3

@@ -60,7 +60,7 @@ No manual build or deploy steps — push is the publish action.
 │   └── post.njk                # Layout for individual posts
 ├── index.njk                   # Homepage
 ├── archive/
-│   ├── index.njk               # Archive grid page; has layout: false in frontmatter
+│   ├── index.njk               # Archive list page ("texts+images"); layout: false
 │   ├── archive.json            # Directory data: applies layout: post.njk to posts
 │   └── {NNNN}/                 # One folder per post, zero-padded number
 │       ├── {Name}.md           # Post content with frontmatter
@@ -71,7 +71,9 @@ No manual build or deploy steps — push is the publish action.
 │   └── styles.css
 └── assets/
     ├── fonts/
-    └── images/
+    ├── images/
+    └── js/
+        └── collage-editor.js   # ?edit=1 panel for typewriting collages
 ```
 
 ## URL Conventions
@@ -143,11 +145,26 @@ Posts are structured as series of slides, separated by `---` with an HTML commen
 <!-- slide:text -->
 <!-- slide:image -->
 <!-- slide:combo -->
+<!-- slide:typewriting -->
 ```
 
-Slide parsing is implemented as an Eleventy transform (`"slides"` in `eleventy.config.js`). It runs on every HTML output page, finds `<article class="slides">`, splits on `<!-- slide:type -->` markers, and wraps each chunk in `<section class="slide slide--{type}">`. `post.njk` wraps `{{ content }}` in `<article class="slides">`, so the selector is always present for post pages.
+Slide parsing is implemented as an Eleventy transform (`"slides"` in `eleventy.config.js`). It runs on every HTML output page, finds `<article class="slides">`, splits on `<!-- slide:type -->` markers, and wraps each chunk in `<section class="slide slide--{type}">`. `post.njk` wraps `{{ content }}` in `<article class="slides">`, so the selector is always present for post pages. The cover slide in `post.njk` renders only when `subtitle`, `tags`, or `cover_image` is present in frontmatter.
 
-Per-slide CSS styling (cover, text, image, combo) is still open.
+### slide:typewriting — collages
+
+A character-grid collage after Ruth Wolf-Rehfeldt: a `<pre>` with ASCII art plus absolutely positioned images snapped to the character grid.
+
+```html
+<div class="typewriting" style="--tw-font: 'IBM_VGA_8x16'; --tw-lh: 1">
+<pre>…ascii…</pre>
+<img src="../attachments/file.webp" style="--col: 29; --row: 7; --w: 32">
+</div>
+```
+
+- `--col`/`--w` are in `ch`, `--row` in `lh` — images move with font and line-height changes
+- `--tw-font` / `--tw-lh` / `--tw-size` on the container set the monofont, line spacing, and font size (defaults live in `.typewriting` in styles.css); `.typewriting--erika` switches to Erica Type
+- **Such posts need `templateEngineOverride: njk` in frontmatter** — markdown-it breaks HTML blocks at blank lines inside `<pre>` (see Gotchas)
+- **Collage editor:** open the post with `?edit=1` — a panel (assets/js/collage-editor.js) adjusts font, line-height, and per-image col/row/w; images are draggable, snapped to the grid; outputs a paste-ready snippet for the `.md`
 
 ## Dual Output (planned)
 
@@ -162,12 +179,28 @@ The same Markdown source is intended to produce two representations:
 
 ## Visual System (`css/styles.css`)
 
-Two coexisting themes:
+Role-based design tokens on `:root` — the theme switches in one place:
 
-- **Paper mode** (default): warm off-white `#f5f0e6`, dark ink `#1a1a18`, red accent `#cc3333` — samizdat printed matter
-- **Terminal mode** (`.euromancer` class on `<body>`): background `#0d1117`, text `#8b949e` — CRT terminal
+- `--bg` / `--bg-warm` / `--border` — paper: warm off-white `#f5f0e6` family
+- `--fg` / `--fg-dim` / `--fg-faint` — ink: `#1a1a18` family
+- `--accent` / `--accent-faint` — red ribbon `#cc3333`
 
-Design tokens as CSS custom properties on `:root`. Spacing scale `--space-xs` (8px) through `--space-xl` (96px). Typography: Cascadia Code (body), Syne Mono (`h2`), IBM VGA 8x16 (`h3` subheadings), Erika Type (loaded but currently unused in layout).
+**Dark mode** = `.euromancer` class on `<body>`: a single block overrides the role tokens with the terminal palette (`#0d1117` bg, `#8b949e` fg). No separate `--terminal-*` token layer — the whole site is a terminal. The dark block exists in CSS; no toggle is wired yet.
+
+Spacing scale `--space-xs` (8px) through `--space-xl` (96px). Typography: Cascadia Mono (body), Syne Mono (`h2`), IBM VGA 8x16 (`h3` and ASCII headlines), iA Writer Mono / Erica Type (typewriting collages).
+
+Links render with terminal brackets `[link]` via `a::before/::after`; the nav path is excluded.
+
+Layout: one column — `header`, `main`, `footer` share `max-width: 960px`, centered, symmetric `--space-md` side padding. Headline `pre` reserves `min-height: 6em` so the nav sits at the same height on every page regardless of ASCII descenders.
+
+### ASCII headlines (tdfiglet)
+
+All `h1` headlines (homepage, archive, posts) are generated at build time by the `tdfiglet` filter in `eleventy.config.js`, which shells out to the [tdfiglet](https://github.com/tat3r/tdfiglet) binary (TheDraw fonts). Current font: `forgotex.tdf` (Forgotten Bl). Posts can override via `cover_font` frontmatter (a `.tdf` font name; ~600 available in `/usr/local/share/tdfiglet/fonts/`).
+
+- Output renders in `IBM_VGA_8x16`, color `--fg-dim`
+- Responsive sizing: the `maxcols` filter measures the art width, templates put it in `--cols` on the `<h1>`, CSS computes `font-size: 100cqw / (--cols × 0.5)` (0.5em = VGA advance) — any headline exactly fills the container at every viewport
+- tdf fonts lack some glyphs: `+` is drawn by the filter itself (half-block art, parts joined line-by-line); `_` is silently dropped by tdfiglet in fonts that don't have it
+- CI: `deploy.yml` builds tdfiglet from source on the runner; if the binary is missing the filter falls back to classic figlet (Slant) instead of failing the build
 
 ### Image Scatter Principle
 
@@ -193,11 +226,14 @@ Completed:
 - Slide parsing (`<!-- slide:type -->` → `<section class="slide slide--{type}>`)
 - Wikilink handling (`![[image.png]]` → `<img>` via Eleventy transform)
 - `render.js` Playwright PNG pipeline for Instagram
+- tdfiglet ASCII headlines on all pages (`tdfiglet` + `maxcols` filters, `--cols` sizing)
+- Archive list ("texts+images") — cDc-style flat list `date - [title]` from `collections.posts`, filtered by `status: ready`
+- `slide:typewriting` collages + `?edit=1` editor
+- Role-based color tokens + dark-mode block (`body.euromancer`)
 
 Active (next up):
-- **figlet h1 on post pages** — render `{{ title | figlet(cover_font) }}` as ASCII art header; filter already exists in `eleventy.config.js`, needs wiring into `post.njk`
 - **render-mode font override** — `--font-base` CSS var + `.render-mode` body class for Instagram-size fonts, toggled by Playwright
-- **archive grid** — populate `<div class="cards">` in `archive/index.njk` via loop over `collections.posts`; each card = cover slide + clickable title + date
+- **dark-mode toggle** — `body.euromancer` block exists, needs a switch
 
 Backlog:
 - Per-slide CSS styling (cover, text, image, combo types)
@@ -212,6 +248,7 @@ Backlog:
 
 - **CLI-first.** Prefer `git`, `npm`, `npx eleventy`, file editing, over GUI tools. euromancer is both subject and method.
 - **Pure terminal aesthetic.** Decorative layers (noise textures, scanlines, fade animations, hover overlays) have been deliberately stripped in prior sessions. Terminal purity is the concept — do not reintroduce effects without explicit request.
+- **Plain-text minimalism.** Reference point: https://cultdeadcow.com/ — monospace, ASCII-art headers, lists of dated links, zero chrome. When in doubt, less.
 - **Inline styles in HTML are avoided in site files.** Styles belong in `css/styles.css`. Exception: historical witness-page prototypes use inline styles for Claude-preview environment constraints; those files are separate from the main site.
 - **Valid shell semantics.** CLI prompts in content (e.g., `n_euromancer@typedeck:~$`) should use plausible command structures, not decorative fake syntax.
 - **One source, multiple outputs.** The `.md` file is canonical. Web and Instagram are views of the same content.
@@ -222,6 +259,9 @@ Backlog:
 - Pages aggressively caches. After deploy, use Cmd+Shift+R or an incognito window to see changes.
 - `package.json` must have `"type": "module"` at the top level. A duplicated `"type": "commonjs"` key caused ES module loading to fail earlier — JSON takes the last value for duplicate keys.
 - Both `.gitignore` and `.eleventyignore` should exclude `node_modules/`. When `.eleventyignore` exists, Eleventy's behavior around `.gitignore` can shift between versions; duplicating is safer.
+- markdown-it terminates an HTML block at the first blank line — a `<pre>` with empty lines inside (ASCII art) gets mangled into paragraphs/code blocks. Posts that are raw HTML (typewriting collages) must set `templateEngineOverride: njk` in frontmatter to skip markdown processing entirely.
+- Relative `src` in post HTML resolves from the page URL (`…/NNNN/Name/`), but attachments live one level up — use `../attachments/file.webp`.
+- `pre` has a UA-stylesheet `font-family: monospace` that beats inheritance — set `font-family: inherit` explicitly when a container defines the font.
 ## render-mode (active task)
 CSS var `--font-base` + `.render-mode` class on `<body>`.
 Playwright adds the class before screenshotting.
