@@ -11,12 +11,9 @@
     <p class="last-login">Last login: <ac>{{ null | renderDate }}</ac> on ttys000</p>
     {% set headline = "euromancer" | tdfiglet("forgotex") %}
     <h1 class="post-figlet" style="--cols: {{ headline | maxcols }}"><pre>{{ headline }}</pre></h1>
-<nav>
-    <span class="nav-tilde">~</span><span class="nav-sep">/</span><a href="{{ '/' | url }}" class="active">home</a><span class="nav-sep">/</span><a href="{{ '/archive/' | url }}">texts+images</a>
-</nav>
+<nav class="prompt">n_euromancer@<span class="prompt-host">emag</span>:~<span class="prompt-sign">$</span> <a href="{{ '/archive/' | url }}">cd texts+images/</a></nav>
   </header>
   <main>
-    <p class="prompt">n_euromancer@<span class="prompt-host">emag</span>:~<span class="prompt-sign">$</span> cat readme.md</p>
     <section class="row-with-media">
       <div class="row-text">
         <h3>What is euromancer@emag?</h3>
@@ -51,7 +48,6 @@
         <img src="assets/images/Punks-dithered-bw.png" alt="">
       </div>
     </section>
-    <p class="prompt">n_euromancer@<span class="prompt-host">emag</span>:~<span class="prompt-sign">$</span> <span class="cursor"></span></p>
   </main>
   <footer>
     <p>[euromancer] 2026 Alég's Web Exercises</p>

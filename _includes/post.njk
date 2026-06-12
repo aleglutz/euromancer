@@ -11,16 +11,13 @@
     <p class="last-login">Last login: <ac>{{ null | renderDate }}</ac> on ttys000</p>
     {% set headline = title | tdfiglet(cover_font or "forgotex") %}
     <h1 class="post-figlet" style="--cols: {{ headline | maxcols }}"><pre>{{ headline }}</pre></h1>
-    <nav>
-      <span class="nav-tilde">~</span><span class="nav-sep">/</span><a href="{{ '/' | url }}">home</a><span class="nav-sep">/</span><a href="{{ '/archive/' | url }}">texts+images</a><span class="nav-sep">/</span><span class="active">{{ title }}</span>
-    </nav>
+    {% set nnnn = page.filePathStem.split('/')[2] %}
+    <nav class="prompt">n_euromancer@<span class="prompt-host">emag</span>:<a href="{{ '/' | url }}">~</a>/<a href="{{ '/archive/' | url }}">texts+images</a>/{{ nnnn }}<span class="prompt-sign">$</span> cat {{ page.fileSlug }}.md</nav>
   </header>
 
   <main>
     {% set parentUrl = page.url | replace(page.fileSlug + '/', '') %}
     {% set attachmentsUrl = (parentUrl + 'attachments/') | url %}
-    {% set parentDir = page.filePathStem | replace('/' + page.fileSlug, '') %}
-    <p class="prompt">n_euromancer@<span class="prompt-host">emag</span>:~{{ parentDir }}<span class="prompt-sign">$</span> cat {{ page.fileSlug }}.md</p>
     <article class="slides">
       {% if subtitle or tags or cover_image %}
       <section class="slide slide--cover"{% if cover_image %} style="background-image: url('{{ attachmentsUrl }}{{ cover_image }}')"{% endif %}>
@@ -34,7 +31,6 @@
       {% endif %}
       {{ content | safe }}
     </article>
-    <p class="prompt">n_euromancer@<span class="prompt-host">emag</span>:~{{ parentDir }}<span class="prompt-sign">$</span> <span class="cursor"></span></p>
   </main>
 
   <footer>

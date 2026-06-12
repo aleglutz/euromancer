@@ -218,39 +218,18 @@ nav {
   margin-bottom: var(--space-xs);
   
 }
-.nav-tilde,
-.nav-sep {
-  color: var(--fg-faint);
-}
 nav a {
   color: var(--fg-faint);
   text-decoration: none;
 }
-nav .active {
-  color: var(--accent);
-}
 
-/* ── TUI: shell-промпты и курсор ── */
+/* nav = единственный shell-промпт страницы; сегменты пути — ссылки */
 .prompt {
   max-width: none;
-  margin-bottom: var(--space-sm);
   color: var(--fg);
 }
 .prompt .prompt-host { color: var(--fg-dim); }
 .prompt .prompt-sign { color: var(--accent); }
-
-.cursor {
-  display: inline-block;
-  width: 0.6em;
-  height: 1.1em;
-  vertical-align: text-bottom;
-  background: var(--fg);
-  animation: blink 1.2s steps(1) infinite;
-}
-@keyframes blink { 50% { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .cursor { animation: none; }
-}
 
 
 /* ── Section-bound image layout ── */

@@ -193,7 +193,7 @@ Links render with terminal brackets `[link]` via `a::before/::after`; the nav pa
 
 Layout: one column — `header`, `main`, `footer` share `max-width: 960px`, left-anchored (TUI, not centered print), symmetric `--space-md` side padding. Headline `pre` reserves `min-height: 6em` so the nav sits at the same height on every page regardless of ASCII descenders.
 
-TUI furniture: every page opens `main` with a shell prompt whose command "produces" the page (`cat readme.md`, `ls -t`, `cat {Name}.md`) and closes with an idle prompt + blinking block cursor (`.cursor`, disabled under `prefers-reduced-motion`). The footer is an inverse-video statusline (tmux-style). Prompts follow valid shell semantics — see Working Principles.
+TUI furniture: the nav IS a shell prompt — one functional line per page, no duplicates. Path segments are links (`~` → home, `texts+images` → archive) and the command "produces" the page: home `~$ [cd texts+images/]`, archive `~/texts+images$ ls -t` (the post list below reads as its output), post `~/texts+images/0002$ cat {Name}.md`. The footer is an inverse-video statusline (tmux-style). Prompts follow valid shell semantics — see Working Principles.
 
 ### ASCII headlines (tdfiglet)
 

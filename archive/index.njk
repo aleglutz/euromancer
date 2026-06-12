@@ -19,12 +19,9 @@ layout: false
       </script>
     {% set headline = "texts+images" | tdfiglet("forgotex") %}
     <h1 class="post-figlet" style="--cols: {{ headline | maxcols }}"><pre>{{ headline }}</pre></h1>
-<nav class="path">
-  <span class="nav-tilde">~<span class="nav-sep">/</span><a href="{{ '/' | url }}">home</a><span class="nav-sep">/</span><a href="{{ '/archive/' | url }}" class="active">texts+images</a>
-</nav>
+<nav class="prompt">n_euromancer@<span class="prompt-host">emag</span>:<a href="{{ '/' | url }}">~</a>/texts+images<span class="prompt-sign">$</span> ls -t</nav>
   </header>
   <main>
-    <p class="prompt">n_euromancer@<span class="prompt-host">emag</span>:~/archive<span class="prompt-sign">$</span> ls -t</p>
     <section>
       <ul class="post-list">
         {% for post in collections.posts %}
@@ -34,7 +31,6 @@ layout: false
         {% endfor %}
       </ul>
     </section>
-    <p class="prompt">n_euromancer@<span class="prompt-host">emag</span>:~/archive<span class="prompt-sign">$</span> <span class="cursor"></span></p>
   </main>
 
   <footer>
