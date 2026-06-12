@@ -19,6 +19,8 @@
   <main>
     {% set parentUrl = page.url | replace(page.fileSlug + '/', '') %}
     {% set attachmentsUrl = (parentUrl + 'attachments/') | url %}
+    {% set parentDir = page.filePathStem | replace('/' + page.fileSlug, '') %}
+    <p class="prompt">n_euromancer@<span class="prompt-host">emag</span>:~{{ parentDir }}<span class="prompt-sign">$</span> cat {{ page.fileSlug }}.md</p>
     <article class="slides">
       {% if subtitle or tags or cover_image %}
       <section class="slide slide--cover"{% if cover_image %} style="background-image: url('{{ attachmentsUrl }}{{ cover_image }}')"{% endif %}>
@@ -32,10 +34,11 @@
       {% endif %}
       {{ content | safe }}
     </article>
+    <p class="prompt">n_euromancer@<span class="prompt-host">emag</span>:~{{ parentDir }}<span class="prompt-sign">$</span> <span class="cursor"></span></p>
   </main>
 
   <footer>
-    <p>2026 Alég's Web Exercises</p>
+    <p>[euromancer] 2026 Alég's Web Exercises</p>
   </footer>
   <script>
     if (new URL(location.href).searchParams.has("render")) {

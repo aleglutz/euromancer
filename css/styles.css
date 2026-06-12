@@ -155,15 +155,15 @@ p {
 a {
   color: var(--accent);
   text-decoration: none;
-  border-bottom: 0px solid var(--accent-faint);
-  transition: border-color 0.2s;
 }
 ac {
   color: var(--fg-dim);
   text-decoration: none;
 }
+/* inverse video на ховере — выделение пункта, как в терминальных меню */
 a:hover {
-  border-bottom-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
 }
 /* Терминальные скобки [текст] вокруг ссылок (из tui-черновика);
    nav-путь и карточки архива — без скобок */
@@ -180,10 +180,9 @@ small {
   font-style: normal;
 }
 
-/* единая колонка: один max-width, симметричные поля, по центру окна */
+/* единая колонка: один max-width, симметричные поля, прижата влево как TUI */
 header, main, footer {
   max-width: 960px;
-  margin-inline: auto;
   padding-inline: var(--space-md);
 }
 
@@ -191,10 +190,18 @@ header {
   container-type: inline-size;
 }
 
+/* футер — статуслайн в духе tmux: инверсная полоса */
 footer {
-  padding-block: var(--space-md);
+  margin-top: var(--space-lg);
+  padding-block: 2px;
+  background: var(--fg);
+  color: var(--bg);
   font-size: 0.8rem;
-  color: var(--fg-faint);
+}
+
+footer p {
+  margin: 0;
+  max-width: none;
 }
 
 /* ── Section ── */
@@ -217,14 +224,32 @@ nav {
 }
 nav a {
   color: var(--fg-faint);
-  border-bottom: none;
   text-decoration: none;
-}
-nav a:hover {
-  color: var(--fg);
 }
 nav .active {
   color: var(--accent);
+}
+
+/* ── TUI: shell-промпты и курсор ── */
+.prompt {
+  max-width: none;
+  margin-bottom: var(--space-sm);
+  color: var(--fg);
+}
+.prompt .prompt-host { color: var(--fg-dim); }
+.prompt .prompt-sign { color: var(--accent); }
+
+.cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  vertical-align: text-bottom;
+  background: var(--fg);
+  animation: blink 1.2s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .cursor { animation: none; }
 }
 
 

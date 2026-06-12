@@ -189,9 +189,11 @@ Role-based design tokens on `:root` — the theme switches in one place:
 
 Spacing scale `--space-xs` (8px) through `--space-xl` (96px). Typography: Cascadia Mono (body), Syne Mono (`h2`), IBM VGA 8x16 (`h3` and ASCII headlines), iA Writer Mono / Erica Type (typewriting collages).
 
-Links render with terminal brackets `[link]` via `a::before/::after`; the nav path is excluded.
+Links render with terminal brackets `[link]` via `a::before/::after`; the nav path is excluded. Link hover is inverse video (accent background), like a selected item in a terminal menu — no underlines, no transitions.
 
-Layout: one column — `header`, `main`, `footer` share `max-width: 960px`, centered, symmetric `--space-md` side padding. Headline `pre` reserves `min-height: 6em` so the nav sits at the same height on every page regardless of ASCII descenders.
+Layout: one column — `header`, `main`, `footer` share `max-width: 960px`, left-anchored (TUI, not centered print), symmetric `--space-md` side padding. Headline `pre` reserves `min-height: 6em` so the nav sits at the same height on every page regardless of ASCII descenders.
+
+TUI furniture: every page opens `main` with a shell prompt whose command "produces" the page (`cat readme.md`, `ls -t`, `cat {Name}.md`) and closes with an idle prompt + blinking block cursor (`.cursor`, disabled under `prefers-reduced-motion`). The footer is an inverse-video statusline (tmux-style). Prompts follow valid shell semantics — see Working Principles.
 
 ### ASCII headlines (tdfiglet)
 
