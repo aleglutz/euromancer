@@ -169,7 +169,6 @@ a:hover {
    nav-путь и карточки архива — без скобок */
 a::before { content: "["; }
 a::after { content: "]"; }
-nav a::before, nav a::after { content: none; }
 small {
   font-size: 0.8rem;
   color: var(--fg-faint);
@@ -218,18 +217,18 @@ nav {
   margin-bottom: var(--space-xs);
   
 }
+/* пункты меню: [ссылка] как везде на сайте; текущий — inverse video,
+   как выделенный пункт в Midnight Commander / lynx */
 nav a {
-  color: var(--fg-faint);
-  text-decoration: none;
+  margin-right: var(--space-xs);
 }
 
-/* nav = единственный shell-промпт страницы; сегменты пути — ссылки */
-.prompt {
-  max-width: none;
-  color: var(--fg);
+nav .active {
+  background: var(--fg);
+  color: var(--bg);
+  padding: 0 4px;
+  margin-right: var(--space-xs);
 }
-.prompt .prompt-host { color: var(--fg-dim); }
-.prompt .prompt-sign { color: var(--accent); }
 
 
 /* ── Section-bound image layout ── */
@@ -277,8 +276,6 @@ nav a {
 	footer {
 		padding-inline: var(--space-sm);
 	}
-
-	.typewriting { font-size: 11px; }
 
 	section { margin-bottom: var(--space-md); }
 	
@@ -488,6 +485,8 @@ nav a {
   .slides { padding-left: 0px; }
   .slides section.slide { padding: var(--space-md) 0; }
   .slide--cover pre { font-size: 10px; }
+  .typewriting { font-size: 11px; }
+  .slides section.slide--typewriting { padding: 0; }
   .last-login {
     padding-left: 0px;
     font-size: 13px;

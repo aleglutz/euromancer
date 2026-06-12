@@ -11,8 +11,7 @@
     <p class="last-login">Last login: <ac>{{ null | renderDate }}</ac> on ttys000</p>
     {% set headline = title | tdfiglet(cover_font or "forgotex") %}
     <h1 class="post-figlet" style="--cols: {{ headline | maxcols }}"><pre>{{ headline }}</pre></h1>
-    {% set nnnn = page.filePathStem.split('/')[2] %}
-    <nav class="prompt">n_euromancer@<span class="prompt-host">emag</span>:<a href="{{ '/' | url }}">~</a>/<a href="{{ '/archive/' | url }}">texts+images</a>/{{ nnnn }}<span class="prompt-sign">$</span> cat {{ page.fileSlug }}.md</nav>
+    <nav><a href="{{ '/' | url }}">home</a> <a href="{{ '/archive/' | url }}">texts+images</a> <span class="active">{{ page.fileSlug }}.md</span></nav>
   </header>
 
   <main>
