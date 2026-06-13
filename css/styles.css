@@ -116,21 +116,19 @@ h1 {
   overflow: hidden;
 }
 
-/* tdfiglet: --cols — реальная ширина арта (задаётся шаблоном).
-   font-size фиксирован (20px > любого browser min-font-size на мобильных).
-   zoom масштабирует уже отрисованный элемент — обходит min-font-size браузера.
-   10px = 0.5em × 20px (advance IBM VGA 8/16 при font-size:20px).
+/* tdfiglet: --cols — реальная ширина арта (задаётся шаблоном), 0.5em —
+   advance IBM VGA (8/16); строка заполняет контейнер на любом шрифте/заголовке.
+   На мобильных браузерах browser min-font-size перебивает calc — итоговый масштаб
+   выставляет fit-header.js через transform: scale(), который min-font-size не затрагивает.
    line-height 1 — полублоки стыкуются без щелей */
 header h1.post-figlet pre {
   font-family: 'IBM_VGA_8x16', monospace;
-  font-size: 20px;
-  zoom: min(calc(100cqw / (var(--cols, 80) * 10px)), 1);
+  font-size: min(calc(100cqw / (var(--cols, 80) * 0.5)), 20px);
   line-height: 1;
   min-height: 6em;
   color: var(--fg-dim);
   margin: 0;
   white-space: pre;
-  overflow: hidden;
 }
 
 h2 {
