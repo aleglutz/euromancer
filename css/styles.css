@@ -118,8 +118,7 @@ h1 {
 
 /* tdfiglet: --cols — реальная ширина арта (задаётся шаблоном), 0.5em —
    advance IBM VGA (8/16); строка заполняет контейнер на любом шрифте/заголовке.
-   На мобильных браузерах browser min-font-size перебивает calc — итоговый масштаб
-   выставляет fit-header.js через transform: scale(), который min-font-size не затрагивает.
+   На мобильных браузерах browser min-font-size перебивает calc — итоговый масштаб выставляет fit-header.js через transform: scale(), который min-font-size не затрагивает.
    line-height 1 — полублоки стыкуются без щелей */
 header h1.post-figlet pre {
   font-family: 'IBM_VGA_8x16', monospace;
@@ -194,7 +193,7 @@ header {
 footer {
   margin-top: var(--space-lg);
   padding-block: 2px;
-  background: var(--fg);
+  background: var(--fg-dim);
   color: var(--bg);
   font-size: 0.8rem;
 }
@@ -219,8 +218,7 @@ main > section:first-child {
 nav {
   font-size: 14px;
   font-family: "Cascadia Mono", monospace;
-  margin-top: var(--space-xs);
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm);
   
 }
 /* пункты меню: [ссылка] как везде на сайте; текущий — inverse video,
@@ -243,7 +241,8 @@ nav .active {
   grid-template-columns: 3fr 2fr;
   gap: 0;
   align-items: start;
-  margin-bottom: var(--space-md);
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-sm);
 }
 
 .row-no-media {
