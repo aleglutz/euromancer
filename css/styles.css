@@ -210,6 +210,11 @@ section {
   margin-bottom: var(--space-lg);
 }
 
+/* первая секция: зазор nav→контент = зазору ascii→nav (8px от nav) */
+main > section:first-child {
+  margin-top: 0;
+}
+
 /* ── Nav ── */
 nav {
   font-size: 14px;
@@ -457,7 +462,7 @@ nav .active {
   width: max-content;
   margin: 0;
   font-family: var(--tw-font, 'IBM_VGA_8x16');
-  font-size: var(--tw-size, 20px);
+  font-size: var(--tw-size, 28px);
   line-height: var(--tw-lh, 1);
 }
 
@@ -486,7 +491,7 @@ nav .active {
   .slides { padding-left: 0px; }
   .slides section.slide { padding: var(--space-md) 0; }
   .slide--cover pre { font-size: 10px; }
-  .typewriting { font-size: 11px; }
+  .typewriting { font-size: 10px; }
   .slides section.slide--typewriting { padding: 0; }
   .last-login {
     padding-left: 0px;
