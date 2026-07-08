@@ -1,0 +1,32 @@
+# fly.toml — euromancer over SSH
+# deploy: fly launch --no-deploy (первый раз) → fly volumes create ssh_key --size 1 → fly deploy
+# после деплоя: ssh euromancer.fly.dev
+
+app = "euromancer"
+primary_region = "ams"   # Амстердам — ближайший к Берлину регион Fly
+
+[build]
+  dockerfile = "Dockerfile"
+
+# raw TCP: внешний порт 22 → wish на 23234 внутри.
+# auto_stop/auto_start: машина спит без посетителей, платишь копейки.
+[[services]]
+  internal_port = 23234
+  protocol = "tcp"
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[services.ports]]
+    port = 22
+
+# host key живёт на volume — иначе при каждом деплое новый отпечаток
+# и у посетителей паника «REMOTE HOST IDENTIFICATION HAS CHANGED»
+[mounts]
+  source = "ssh_key"
+  destination = "/data"
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
