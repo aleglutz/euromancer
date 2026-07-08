@@ -21,8 +21,14 @@ Reference for the genre: `ssh ssh.morilliu.com`, terminal.shop.
 ## Current state (verified working end-to-end)
 
 - Server starts, loads posts with `status: ready`, real ssh sessions work
+- Three screens, mirroring the web nav: home (cover art + `home.md` prose,
+  scrollable) → archive list → post; enter/l forward, h/esc back, q back/quit
 - Archive list: cDc style `date - [title]`, j/k + enter navigation
-- Post view: glamour "dark" theme, scrollable, statusline `title · N/M`
+- Post view: glamour "dark" theme, scrollable, statusline `title · N/M`;
+  tdfiglet headline (title, `cover_font` override) rendered once at startup
+  by shelling out to tdfiglet — Dockerfile builds it into the image; falls
+  back to no art when the binary is missing or the terminal is narrower
+  than the art
 - Typewriting collages pass through as raw ASCII inside a fenced block
   (regex in `prepare()` unwraps `<div class="typewriting"><pre>…`)
 - `<img>` tags → `[image — see the web edition]`
@@ -69,7 +75,10 @@ New post = commit to archive/ + `fly deploy` (content is in the image).
 
 - [x] raw `<pre>` passthrough bypassing glamour (no code-block frame around
       typewritings) — split body into segments, render only prose via glamour
-- [ ] tdfiglet/figlet cover header on the list screen (same Slant font as web)
+- [x] tdfiglet/figlet cover header on the list screen — same forgotex art as
+      the web h1, baked at build time into `header.txt` (`go:generate` +
+      `go:embed`); falls back to the one-line title when the terminal is
+      narrower than the art (71 cols) or too short
 - [ ] `.dur` durdraw playback on connect (cover animation)
 - [ ] chafa half-block preview for dithered webp attachments
 - [ ] hot content reload on SIGHUP (for future VPS; on fly redeploy is fine)
