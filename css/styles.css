@@ -13,6 +13,12 @@
   font-display:swap; 
 }
 @font-face {
+    font-family: 'Andale Mono Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Andale Mono Regular'), url('ANDALEMO.woff') format('woff');
+    }
+@font-face {
   font-family: 'Erica Type';
   src: url('../assets/fonts/EricaType.woff') format('woff');
   font-weight: normal;
@@ -460,8 +466,8 @@ nav .active {
   position: relative;
   width: max-content;
   margin: 0;
-  font-family: var(--tw-font, 'IBM_VGA_8x16');
-  font-size: var(--tw-size, 28px);
+  font-family: var(--tw-font, 'Andale Mono Regular');
+  font-size: var(--tw-size, 18px);
   line-height: var(--tw-lh, 1);
 }
 
