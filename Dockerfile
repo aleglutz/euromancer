@@ -22,6 +22,7 @@ COPY --from=build /euromancer-ssh .
 COPY --from=tdfiglet /usr/local/bin/tdfiglet /usr/local/bin/tdfiglet
 COPY --from=tdfiglet /usr/local/share/tdfiglet /usr/local/share/tdfiglet
 COPY archive/ ./archive/
+COPY assets/images/ ./assets/images/
 ENV CONTENT_DIR=/app/archive PORT=23234 HOST_KEY=/data/euromancer_ed25519
 EXPOSE 23234
 CMD ["./euromancer-ssh"]

@@ -32,11 +32,17 @@ Reference for the genre: `ssh ssh.morilliu.com`, terminal.shop.
 - Typewriting collages pass through as raw ASCII inside a fenced block
   (regex in `prepare()` unwraps `<div class="typewriting"><pre>…`)
 - `<img>` tags → `[image — see the web edition]`
-- Two bugs already fixed, don't reintroduce:
+- Three bugs already fixed, don't reintroduce:
   1. View panicked on zero terminal height (slice with negative index) —
      viewport math is now clamped; keep it clamped
   2. WindowSizeMsg with 0×0 from degenerate PTYs overwrote the 80×24
      fallback — zero values are now ignored in Update
+  3. Package-level lipgloss styles inherit the color profile of the
+     *server* stdout (headless/fly = no TTY = all color silently dropped;
+     locally it worked by accident when the server ran in a terminal pane).
+     Styles live in `theme`, built per session via `bm.MakeRenderer(sess)`;
+     glamour gets the same profile via `glamour.WithColorProfile`. Never
+     create styles with bare `lipgloss.NewStyle()`
 
 ## Conventions
 
