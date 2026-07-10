@@ -66,16 +66,28 @@ ssh -p 23234 localhost
 `~/.ssh/config` should have the localhost block (UserKnownHostsFile
 /dev/null, StrictHostKeyChecking no) to skip fingerprint prompts.
 
-## Deploy (fly.io)
+## Deploy (Oracle Cloud VPS)
 
-```sh
-fly launch --no-deploy        # once; app name may need a suffix
-fly volumes create ssh_key --size 1 -r ams   # persistent host key
-fly deploy                    # every publish
-ssh euromancer.fly.dev
-```
+Live at `ssh 152.70.18.245` (port 22). Host key fingerprint (publish on
+the web site — "verify the press"):
+`SHA256:iN1VdxBmGR/1/CotqVve1htV+/hhc8lDVxtHhfb7UyQ` (ED25519)
 
-New post = commit to archive/ + `fly deploy` (content is in the image).
+- VM: Always Free E2.1.Micro, Ubuntu 24.04, x86_64; VCN `euromancer-vcn`,
+  ingress open on 22 (readers) and 2222 (admin sshd)
+- Admin: `ssh -p 2222 ubuntu@152.70.18.245`. sshd runs as a plain daemon —
+  Ubuntu 24.04's default socket-activation gets killed by port scanners
+  (systemd trigger limit → socket failed → total ssh lockout; happened
+  once, needed instance recreation with cloud-init). Never re-enable
+  ssh.socket. The free shape has no Run Command agent plugin — ssh on
+  2222 is the only way in, guard it.
+- Layout: `/opt/euromancer/{euromancer-ssh,archive/,assets/images/,.ssh/}`,
+  systemd unit `euromancer.service` (PORT=22 via CAP_NET_BIND_SERVICE,
+  user `euromancer`), tdfiglet built from source on the VM
+- New post = commit to ../archive + `./deploy.sh` (build, rsync content,
+  restart)
+
+fly.io config (repo-root fly.toml + Dockerfile) is kept as an alternative
+but was never launched — Fly requires a credit card.
 
 ## Backlog
 
