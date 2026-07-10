@@ -101,7 +101,8 @@ but was never launched — Fly requires a credit card.
 - [ ] chafa half-block preview for dithered webp attachments
 - [ ] hot content reload on SIGHUP (for future VPS; on fly redeploy is fine)
 - [ ] guestbook: append-only file, write via `s` key — BBS gesture
-- [ ] publish host key fingerprint on the web site ("verify the press")
+- [x] publish host key fingerprint on the web site ("verify the press") —
+      shared `_includes/footer.njk`, second statusline row on every page
 
 ## Repo hygiene
 

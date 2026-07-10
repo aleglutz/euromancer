@@ -32,9 +32,7 @@
     </article>
   </main>
 
-  <footer>
-    <p>[euromancer] 2026 Alég's Web Exercises</p>
-  </footer>
+  {% include "footer.njk" %}
   <script>
     if (new URL(location.href).searchParams.has("render")) {
       document.body.classList.add("render-mode");

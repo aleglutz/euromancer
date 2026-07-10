@@ -209,6 +209,11 @@ footer p {
   max-width: none;
 }
 
+/* отпечаток ключа прессы — длинная строка, на узких экранах ломается */
+footer .press-key {
+  word-break: break-all;
+}
+
 /* ── Section ── */
 section {
   margin-top: var(--space-md);
