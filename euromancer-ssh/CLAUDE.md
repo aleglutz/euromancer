@@ -83,6 +83,11 @@ the web site — "verify the press"):
 - Layout: `/opt/euromancer/{euromancer-ssh,archive/,assets/images/,.ssh/}`,
   systemd unit `euromancer.service` (PORT=22 via CAP_NET_BIND_SERVICE,
   user `euromancer`), tdfiglet built from source on the VM
+- Browser edition: `http://152.70.18.245` — ttyd (unit
+  `euromancer-web.service`, port 80, user `euromancer-web`) wraps
+  `ssh reader@127.0.0.1`, xterm.js themed to the palette. Plain http
+  until there is a domain (no certs for bare IPs) — then add caddy for
+  TLS and a `[live]` link/embed on the Pages site
 - New post = commit to ../archive + `./deploy.sh` (build, rsync content,
   restart)
 
