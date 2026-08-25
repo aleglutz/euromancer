@@ -1,9 +1,17 @@
 import figlet from "figlet";
 import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
+
+// Рамка слайда — cliizdat-ассет, сетка 80×46 (4:5 при advance 0.6 / lh 1.3043)
+const SLIDE_FRAME = readFileSync("assets/frames/slide-80x46.txt", "utf8").replace(/\n+$/, "");
+
 export default function(eleventyConfig) {
     const pathPrefix = "/euromancer/";
     eleventyConfig.addPassthroughCopy("css");
     eleventyConfig.addPassthroughCopy("assets");
+    // MemoActs module pages are self-contained documents with their own type
+    // and layout: copied verbatim, never run through a site layout.
+    eleventyConfig.addPassthroughCopy("memoacts");
     eleventyConfig.addPassthroughCopy("archive/**/attachments/**");
     eleventyConfig.addFilter("figlet", function (text, font = "Slant") {
         return figlet.textSync(text, { font });
