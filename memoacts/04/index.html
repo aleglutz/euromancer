@@ -1,0 +1,1003 @@
+<!--
+  Module 04 — the whole module as one page.
+
+  Same construction as module 03: one HTML file, one fonts/ directory, no
+  server. The difference is the material. Module 03 carried its own media/
+  folder because every clip was produced for it. Module 04 shows four films
+  that exist in the world already, so nothing is hosted here — each fragment
+  is an embedded player pointed at somebody else's copy, cued to the in-point,
+  with the plain link underneath as the fallback. YouTube honours both marks;
+  VK honours the in-point only; ok.ru honours neither.
+
+  Type is the MemoActs archival register: Newsreader for titles, Archivo for
+  the apparatus, Share Tech Mono for the typed body. Newsreader and Archivo
+  come from Google Fonts over the network; Share Tech Mono is hosted in
+  fonts/, so the body text still sets correctly on a machine that is offline.
+
+  Rights: none of the four films is ours. Embedding a copy someone else has
+  published and screening it in a seminar are different acts from publishing
+  it. The players are what they are — check all five before the session; an
+  embed can be blocked where the direct link still opens.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 04 — Editing as a Way of Thinking</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap");
+
+/* Share Tech Mono is hosted in fonts/ rather than imported: the body text is
+   the one register that must survive a screening with no network. */
+@font-face {
+  font-family: "Share Tech Mono";
+  src: url("fonts/ShareTechMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --scan-100: #eceae5;
+  --scan-200: #dedcd6;
+  --scan-300: #c7c5be;
+  --scan-400: #a8a7a0;
+  --scan-500: #6f6e69;
+
+  --ink: #1a1a18;
+  --annot: #2f4a8c;
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 32px;
+  --space-lg: 64px;
+  --space-xl: 96px;
+
+  --measure: 680px;
+  --page: 960px;
+
+  --typed: "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo,
+           Consolas, monospace;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --apparatus: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --divider-face: "Cascadia Mono", var(--typed);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--scan-100);
+  color: var(--ink);
+  font-family: var(--typed);
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+main {
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
+}
+
+.measure { max-width: var(--measure); }
+
+/* --------------------------------------------------------------- masthead */
+
+header.masthead {
+  border-bottom: 1px solid var(--scan-300);
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.kicker {
+  font-family: var(--apparatus);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--annot);
+  margin: 0 0 var(--space-xs);
+}
+
+h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-sm);
+}
+
+@media (max-width: 560px) { h1 { font-size: 26px; } }
+
+.standfirst {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.45;
+  color: var(--scan-500);
+  margin: 0;
+  max-width: var(--measure);
+}
+
+/* ---------------------------------------------------------------- runlist */
+
+nav.runlist {
+  border: 1px solid var(--scan-300);
+  background: var(--scan-200);
+  padding: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+nav.runlist p {
+  font-family: var(--apparatus);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--scan-500);
+  margin: 0 0 var(--space-xs);
+}
+
+nav.runlist ol {
+  margin: 0;
+  padding-left: 1.6em;
+  columns: 2;
+  column-gap: var(--space-md);
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) { nav.runlist ol { columns: 1; } }
+nav.runlist li { margin-bottom: 2px; break-inside: avoid; }
+nav.runlist ol::marker, nav.runlist li::marker { color: var(--scan-400); }
+
+/* ------------------------------------------------------------------ links */
+
+a { color: var(--annot); text-decoration: none; }
+a::before { content: "["; color: var(--scan-400); }
+a::after  { content: "]"; color: var(--scan-400); }
+a:hover, a:focus { background: var(--annot); color: var(--scan-100); outline: none; }
+a:hover::before, a:hover::after,
+a:focus::before, a:focus::after { color: var(--scan-100); }
+
+/* --------------------------------------------------------------- sections */
+
+section { margin-bottom: var(--space-xl); scroll-margin-top: var(--space-sm); }
+
+h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0 0 var(--space-xs);
+}
+
+@media (max-width: 560px) { h2 { font-size: 21px; } }
+
+h2 em { font-style: italic; }
+
+h3 {
+  font-family: var(--apparatus);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--scan-500);
+  line-height: 1.5;
+  margin: var(--space-md) 0 var(--space-xs);
+}
+
+.meta {
+  font-family: var(--apparatus);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--scan-400);
+  line-height: 1.6;
+  margin: 0 0 var(--space-sm);
+}
+
+p, ul, ol { max-width: var(--measure); }
+p { margin: 0 0 var(--space-sm); }
+ul, ol { padding-left: 1.2em; margin: 0 0 var(--space-sm); }
+li { margin-bottom: var(--space-xs); }
+li::marker { color: var(--scan-400); }
+strong { font-weight: 400; color: var(--ink); }
+
+/* You-are-here. Same block as a hovered link, so "current" and "clickable"
+   read as one gesture: the blue is the page pointing at itself. */
+.here {
+  background: var(--annot);
+  color: var(--scan-100);
+  padding: 1px 5px;
+}
+
+tr.here td {
+  background: var(--annot);
+  color: var(--scan-100);
+  border-bottom-color: var(--annot);
+}
+
+/* A stage already under way. Grey, not blue: started is not the same as
+   "we are doing it in this room today". */
+li.started { color: var(--scan-400); }
+
+.legend {
+  font-family: var(--apparatus);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--scan-400);
+  margin: 0 0 var(--space-sm);
+}
+
+/* --------------------------------------------------------------- fragment */
+
+/* Module 03 hosted its clips because it made them. These four films are other
+   people's: the box holds a player, an in-point and an out-point, not a copy.
+   Page-width like module 03's media frames, so the picture is watchable. */
+.frag {
+  background: var(--scan-200);
+  border: 1px solid var(--scan-300);
+  padding: var(--space-sm);
+  margin: 0 0 var(--space-sm);
+  transition: border-color 0.2s;
+}
+
+.frag:hover { border-color: var(--scan-400); }
+
+/* The player itself. Nothing is hosted here — the iframe is a window onto
+   somebody else's copy, cued to the in-point. If it stays black, the link
+   under it is the fallback. */
+.embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 1px solid var(--scan-300);
+  margin: 0 0 var(--space-xs);
+}
+
+.embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.frag .title {
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.3;
+  margin: 0 0 2px;
+}
+
+.frag .title em { font-style: italic; }
+
+.frag .imprint {
+  color: var(--scan-500);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 var(--space-sm);
+}
+
+.frag .cue {
+  border-top: 1px solid var(--scan-300);
+  padding-top: var(--space-xs);
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.frag .cue .tc {
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--scan-100);
+  padding: 1px 6px;
+  margin-right: var(--space-xs);
+  white-space: nowrap;
+}
+
+.frag .cue .note {
+  font-family: var(--apparatus);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--scan-400);
+  display: block;
+}
+
+/* ------------------------------------------------------------------- spec */
+
+dl.spec {
+  border-top: 1px solid var(--scan-300);
+  border-bottom: 1px solid var(--scan-300);
+  margin: 0 0 var(--space-md);
+  padding: var(--space-sm) 0;
+  font-size: 13px;
+  line-height: 1.7;
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 4px var(--space-sm);
+  max-width: var(--measure);
+}
+
+@media (max-width: 560px) { dl.spec { grid-template-columns: 1fr; gap: 0 0; } }
+
+dl.spec dt {
+  font-family: var(--apparatus);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--scan-400);
+  line-height: 1.6;
+  padding-top: 4px;
+}
+
+dl.spec dd { margin: 0; color: var(--scan-500); }
+dl.spec dd code { color: var(--ink); }
+
+code {
+  background: var(--scan-200);
+  padding: 0 3px;
+  font-family: var(--typed);
+  font-size: 0.95em;
+}
+
+/* ------------------------------------------------------------------ table */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 var(--space-md);
+}
+
+th, td {
+  text-align: left;
+  padding: 7px var(--space-xs);
+  border-bottom: 1px solid var(--scan-300);
+  vertical-align: top;
+}
+
+thead th {
+  font-family: var(--apparatus);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--scan-400);
+  border-bottom: 1px solid var(--scan-300);
+}
+
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.dim, .dim { color: var(--scan-500); }
+td.mark, .mark { color: var(--annot); }
+
+/* -------------------------------------------------------------- discussion */
+
+details {
+  border-top: 1px solid var(--scan-300);
+  padding-top: var(--space-xs);
+  max-width: var(--measure);
+}
+
+summary {
+  cursor: pointer;
+  font-family: var(--apparatus);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--scan-500);
+  list-style: none;
+}
+
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "+ "; color: var(--annot); }
+details[open] summary::before { content: "\2212 "; }
+summary:hover { color: var(--annot); }
+details ol { padding-left: 1.4em; margin-top: var(--space-xs); }
+
+/* ------------------------------------------------------------------ pull */
+
+/* The one line each block is built to leave in the room. */
+blockquote.pull {
+  border-left: 2px solid var(--annot);
+  margin: var(--space-md) 0;
+  padding: 0 0 0 var(--space-sm);
+  max-width: var(--measure);
+}
+
+blockquote.pull p { margin: 0 0 var(--space-xs); }
+blockquote.pull p:last-child { margin-bottom: 0; }
+
+blockquote.pull .claim {
+  font-family: var(--serif);
+  font-size: 22px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+@media (max-width: 560px) { blockquote.pull .claim { font-size: 19px; } }
+
+.source {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--scan-500);
+  max-width: var(--measure);
+  border-top: 1px solid var(--scan-300);
+  padding-top: var(--space-xs);
+  margin: var(--space-sm) 0 var(--space-md);
+}
+
+/* ---------------------------------------------------------------- divider */
+
+/* An unrendered markdown rule: the dashes are literally set, not drawn. */
+.divider {
+  font-family: var(--divider-face);
+  color: var(--scan-400);
+  font-size: 14px;
+  line-height: 1;
+  margin: var(--space-lg) 0;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.divider::before {
+  content: "------------------------------------------------------------------------------------------------------------------------------------------------------------";
+}
+
+/* ----------------------------------------------------------------- footer */
+
+footer {
+  border-top: 1px solid var(--scan-300);
+  padding-top: var(--space-sm);
+  color: var(--scan-500);
+  font-size: 13px;
+  line-height: 1.7;
+  max-width: var(--measure);
+}
+
+footer p { margin: 0 0 var(--space-xs); }
+</style>
+</head>
+<body>
+<main>
+
+<header class="masthead">
+  <p class="kicker">MemoActs 2026 · online intensive · 25.08 · Zoom · 120 min</p>
+  <h1>Module 04 — Editing as a Way of Thinking Through a Fragmented Reality</h1>
+  <p class="standfirst measure">
+    Four fragments, four things a cut can do: connect, limit, disjoin, multiply.
+    Nothing is hosted here — each fragment plays from where the film is already
+    published, cued to the in-point. Watch together, stop on the mark, then
+    edit.
+  </p>
+</header>
+
+<nav class="runlist">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#where">Where this sits</a></li>
+    <li><a href="#runsheet">Run of show</a></li>
+    <li><a href="#B1">1 — the cut as method</a></li>
+    <li><a href="#B2">2 — the cut as connection</a></li>
+    <li><a href="#B3">3 — the cut as limit</a></li>
+    <li><a href="#B4">4 — the cut as disjunction</a></li>
+    <li><a href="#now">What world are we editing in</a></li>
+    <li><a href="#assignment">Assignment</a></li>
+    <li><a href="#shotcut">Shotcut</a></li>
+    <li><a href="#breakouts">Breakouts</a></li>
+    <li><a href="#screenings">Screenings</a></li>
+    <li><a href="#close">Close</a></li>
+    <li><a href="#checklist">Editing checklist</a></li>
+  </ol>
+</nav>
+
+<!-- ----------------------------------------------------------- where -->
+
+<section id="where">
+  <h2>Where this sits</h2>
+  <p class="meta">Facilitator: Konstantin Koryagin</p>
+
+  <h3>Creator's workflow</h3>
+  <ol>
+    <li>Idea and the topic</li>
+    <li>Research to collect and verify materials</li>
+    <li>Decide how to present the document</li>
+    <li class="started">Write a screenplay and record the voiceover</li>
+    <li><strong class="here">Assemble the visuals — you are here</strong></li>
+    <li>Polish: subtitles, visual effects, sound design</li>
+    <li>Pre-publishing screening and evaluation</li>
+  </ol>
+  <p class="legend">Grey — already under way</p>
+
+  <h3>Schedule</h3>
+  <table>
+    <tbody>
+      <tr><td>14.08</td><td>01 Introduction and Finding the Focus</td></tr>
+      <tr><td>18.08</td><td>02 Research Phase — AI-powered or AI-distorted</td></tr>
+      <tr><td>21.08</td><td>03 Ethics and Techniques of Intervening in Archival Footage + Creating a Moodboard</td></tr>
+      <tr class="here"><td>25.08</td><td>04 Editing as a Way of Thinking Through a Fragmented Reality</td></tr>
+      <tr><td>27.08</td><td>05 Tools Implementation: Choose What Works or Build Your Own</td></tr>
+      <tr><td>02.09</td><td>06 Production: Visual Effects and Sound Design</td></tr>
+      <tr><td>07.09</td><td>07 Final Screening and Wrap Up</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Before you join</h3>
+  <p>Shotcut installed. The players below run inside this page — open it ahead
+    of time and check all four start where you are. If one stays black, use the
+    link under it.</p>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- -------------------------------------------------------- runsheet -->
+
+<section id="runsheet">
+  <h2>Run of show</h2>
+  <p class="meta">120 min · two hours, one break</p>
+
+  <table>
+    <thead>
+      <tr><th>Time</th><th>What</th><th>Format</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>00:00–00:04</td><td>Opening, framing</td><td class="dim">facilitator</td></tr>
+      <tr><td>00:04–00:11</td><td>Block 1 — the cut as method</td><td class="dim">three theses</td></tr>
+      <tr><td>00:11–00:30</td><td>Block 2 — the cut as connection</td><td class="dim">2 fragments + discussion</td></tr>
+      <tr><td>00:30–00:43</td><td>Block 3 — the cut as limit</td><td class="dim">1 fragment + discussion</td></tr>
+      <tr><td>00:43–00:58</td><td>Block 4 — the cut as disjunction</td><td class="dim">1 fragment + discussion</td></tr>
+      <tr><td>01:00–01:08</td><td>Assignment and rules</td><td class="dim">facilitator</td></tr>
+      <tr><td>01:08–01:15</td><td>Shotcut: only what is needed today</td><td class="dim">screen share</td></tr>
+      <tr><td>01:15–01:40</td><td>Work in 4 groups</td><td class="dim">breakout rooms</td></tr>
+      <tr><td>01:40–01:55</td><td>Screenings and discussion</td><td class="dim">4 × 3 min</td></tr>
+      <tr><td>01:55–02:00</td><td>Closing</td><td class="dim">facilitator</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- -------------------------------------------------------------- B1 -->
+
+<section id="B1">
+  <h2>1 — The cut as method</h2>
+  <p class="meta">Part one · 7 min</p>
+
+  <ol>
+    <li>Montage is born where reality has stopped holding together on its own:
+      urbanisation, the First World War, revolutions, Dada, collage. Not a
+      device but a reaction.</li>
+    <li>The Kuleshov effect: the meaning of shots changes in sequence.</li>
+  </ol>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- -------------------------------------------------------------- B2 -->
+
+<section id="B2">
+  <h2>2 — The cut as connection</h2>
+  <p class="meta">Part one · 19 min · constructive, utopian montage</p>
+
+  <div class="frag">
+    <p class="title">⏵ <em>The Battle of Russia</em></p>
+    <p class="imprint">(1943), dir. Frank Capra — film 5 of the <em>Why We Fight</em>
+      series, U.S. War Department, 1942–45</p>
+    <div class="embed">
+      <iframe src="https://www.youtube-nocookie.com/embed/WrKDBFJoo2w?start=1646&amp;end=1852&amp;rel=0"
+              title="The Battle of Russia — 27:26–30:52"
+              loading="lazy" allowfullscreen
+              allow="accelerometer; encrypted-media; picture-in-picture; fullscreen"></iframe>
+    </div>
+    <p class="cue">
+      <span class="tc">27:26 — 30:52</span>
+      <a href="https://youtu.be/WrKDBFJoo2w?t=1646">youtu.be/WrKDBFJoo2w</a>
+      <span class="note">Player starts and stops on the marks · 3 min 26 s</span>
+    </p>
+  </div>
+
+  <h3>Questions</h3>
+  <ol>
+    <li>Where do you think each shot was filmed? How do you know?</li>
+    <li><strong>Mentally switch off the sound. What is left of the argument?</strong></li>
+  </ol>
+
+  <p><strong>Critique according to Bazin.</strong> The shots are given the
+    logical structure of oratory, and that speech acquires the credibility of a
+    photograph. An illusion of proof arises where there are only ambiguous facts
+    held together by the commentator's words. The invisible commentator, whom
+    the viewer forgets about, is "the historian of tomorrow", resurrecting faces
+    and events from the world's film archives at will. The objection is not to
+    the content and not to the authors' being right, but to the method.</p>
+
+  <p class="source">Bazin, "On <em>Why We Fight</em>: History, Documentation, and
+    the Newsreel (1946)", trans. Bert Cardullo, first published in
+    <em>Esprit</em> (1946), reprinted in <em>Qu'est-ce que le cinéma?</em>,
+    vol. 1, <em>Ontologie et langage</em> (Paris: Éditions du Cerf, 1958),
+    31–36.</p>
+
+  <div class="frag">
+    <p class="title">⏵ <em>State Funeral</em></p>
+    <p class="imprint">(2019), dir. Sergei Loznitsa, 135 min, Netherlands / Lithuania</p>
+    <div class="embed">
+      <iframe src="https://vkvideo.ru/video_ext.php?oid=-109280427&amp;id=456239428&amp;hd=2&amp;t=2h0m59s"
+              title="State Funeral — 2:00:59"
+              loading="lazy" allowfullscreen
+              allow="encrypted-media; picture-in-picture; fullscreen"></iframe>
+    </div>
+    <p class="cue">
+      <span class="tc">2:00:59 — 2:04:13</span>
+      <a href="https://vkvideo.ru/video-109280427_456239428?t=2h0m59s">vkvideo.ru/video-109280427_456239428</a>
+    </p>
+
+    <div class="embed">
+      <iframe src="https://vkvideo.ru/video_ext.php?oid=-109280427&amp;id=456239428&amp;hd=2&amp;t=2h10m6s"
+              title="State Funeral — 2:10:06"
+              loading="lazy" allowfullscreen
+              allow="encrypted-media; picture-in-picture; fullscreen"></iframe>
+    </div>
+    <p class="cue">
+      <span class="tc">2:10:06 — 2:12:00</span>
+      <a href="https://vkvideo.ru/video-109280427_456239428?t=2h10m6s">vkvideo.ru/video-109280427_456239428</a>
+      <span class="note">Same file, two fragments · 3 min 14 s + 1 min 54 s · the player has no out-point, stop by hand</span>
+    </p>
+  </div>
+
+  <h3>Questions</h3>
+  <ol>
+    <li>How many different places did you count? What connects these shots to
+      one another apart from the cut?</li>
+    <li>How do we know that all these people are weeping over the same thing —
+      and at the same hour?</li>
+    <li>Who could have seen this in 1953?</li>
+    <li>Nobody here asserts anything out loud. You understood what you were
+      being told all the same. How exactly?</li>
+  </ol>
+
+  <p><strong>What is authorial here and what is inherited.</strong> The scene of
+    worldwide mourning was already the intended culminating montage of
+    <em>The Great Farewell</em> back in 1953. Loznitsa barely touches it. What
+    you are watching is the work of a Soviet editor, shown in full.</p>
+
+  <p>All of Loznitsa's authorial editing in this passage comes down to a single
+    juncture — between this scene and the closing titles. One cut turns two
+    hours around.</p>
+
+  <blockquote class="pull">
+    <p>Removing the voice-over does not mean ceasing to construct: the
+      persuasion simply moves into the junctures, where it is harder to contest,
+      because a cut cannot be quoted the way a line of narration can. And the
+      reverse holds too: one cut is enough to turn around a two-hour
+      construction.</p>
+    <p class="claim">The unit of meaning is the juncture, not the shot.</p>
+  </blockquote>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- -------------------------------------------------------------- B3 -->
+
+<section id="B3">
+  <h2>3 — The cut as limit</h2>
+  <p class="meta">Part one · 13 min · post-utopian montage</p>
+
+  <p><strong>Lead-in before the screening:</strong> after the Holocaust, montage
+    stops promising a future. It begins to describe the impossibility of
+    telling.</p>
+
+  <div class="frag">
+    <p class="title">⏵ <em>Night and Fog</em> [<em>Nuit et brouillard</em>]</p>
+    <p class="imprint">(1956), dir. Alain Resnais, 32 min, France</p>
+    <div class="embed">
+      <iframe src="https://ok.ru/videoembed/4422944950921"
+              title="Night and Fog"
+              loading="lazy" allowfullscreen
+              allow="encrypted-media; picture-in-picture; fullscreen"></iframe>
+    </div>
+    <p class="cue">
+      <span class="tc">06:07 — 11:45</span>
+      <a href="https://ok.ru/video/4422944950921">ok.ru/video/4422944950921</a>
+      <span class="note">This player takes no time parameter — scrub to 06:07 by hand · 5 min 38 s</span>
+    </p>
+  </div>
+
+  <h3>Questions</h3>
+  <ol>
+    <li>What does the music do — does it help you feel, or does it get in the
+      way?</li>
+    <li>Why the different colours?</li>
+    <li>What did you learn from the image, and what from the voice?</li>
+    <li>The camera travels across an empty place. Who is travelling? Whose
+      movement is this?</li>
+    <li>What does this fragment make of you — someone who has been given an
+      explanation, or someone who has been placed before a question?</li>
+  </ol>
+
+  <blockquote class="pull">
+    <p><strong>Post-utopian montage:</strong> a critique of ready-made
+      historical explanation. The rupture shows the working of trauma instead of
+      "overcoming" it. The point is not that it must not be depicted, but that
+      realist representation would make the event consumable.</p>
+    <p class="claim">Trauma here is not a theme but a form: repetition, rupture,
+      deferral, the impossibility of integration. Montage does not depict
+      trauma; it has its contours.</p>
+  </blockquote>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- -------------------------------------------------------------- B4 -->
+
+<section id="B4">
+  <h2>4 — The cut as disjunction</h2>
+  <p class="meta">Part one · 15 min · historicizing and multiplying montage</p>
+
+  <div class="frag">
+    <p class="title">⏵ <em>Respite</em> [<em>Aufschub</em>]</p>
+    <p class="imprint">(2007), dir. Harun Farocki, 40 min, silent, b&amp;w,
+      Germany — reworking footage commissioned by the Westerbork camp
+      commandant in 1944 and shot by Rudolf Breslauer</p>
+    <div class="embed">
+      <iframe src="https://www.youtube-nocookie.com/embed/ih-5_-CL_T4?start=1936&amp;end=2190&amp;rel=0"
+              title="Respite — 32:16–36:30"
+              loading="lazy" allowfullscreen
+              allow="accelerometer; encrypted-media; picture-in-picture; fullscreen"></iframe>
+    </div>
+    <p class="cue">
+      <span class="tc">32:16 — 36:30</span>
+      <a href="https://youtu.be/ih-5_-CL_T4?t=1936">youtu.be/ih-5_-CL_T4</a>
+      <span class="note">Player starts and stops on the marks · 4 min 14 s · silent</span>
+    </p>
+  </div>
+
+  <h3>Questions</h3>
+  <ol>
+    <li>What did we see, and what do we know only from our own historical
+      knowledge?</li>
+    <li>People in front of a camera behave differently than without it. Does
+      that make the shot less truthful — or is that precisely its principal
+      testimony?</li>
+    <li>What do the stops, repetitions and titles do with the footage?</li>
+  </ol>
+
+  <p><strong>Soft montage and the dialectical cut.</strong> An image should not
+    only be used but investigated. Two images do not destroy each other and are
+    not reduced to a common conclusion; they remain side by side and hold the
+    tension. It makes very familiar footage strange again.</p>
+
+  <p><strong>Interstitial thinking.</strong> The strength of <em>Respite</em>
+    lies not in seamlessness but in disjunctures. The narrator speaks in the
+    first person and constantly relativises his own reading — he does not
+    possess the images any more than the viewer does.</p>
+
+  <p class="source">Laura Rascaroli, <em>How the Essay Film Thinks</em>
+    (New York: Oxford University Press, 2017), ch. 2, "Montage: Essayistic
+    Thinking at the Juncture of Images".</p>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ------------------------------------------------------------- now -->
+
+<section id="now">
+  <h2>What kind of world are we editing in now?</h2>
+  <p class="meta">Part one · multiplying montage</p>
+
+  <ol>
+    <li>The world is no longer broken into fragments. It is made of them.</li>
+    <li>Kukulin calls this <strong>multiplying montage</strong>. It cuts between
+      kinds of material, not between shots. Newsreel, a document, a screenshot,
+      phone footage, a meme, a title card. Not different pictures — different
+      kinds of thing in one line.</li>
+    <li>The old montage assembled the world. This one assembles a person.</li>
+    <li>A reel is a multiplying form by definition. You already work this way.
+      The question is whether it is reflected upon or not.</li>
+  </ol>
+
+  <p><strong>So what does it mean to be critical inside this mode?</strong>
+    You cannot step out of the feed. You can make the gaps do work. Every
+    juncture has to produce something.</p>
+
+  <blockquote class="pull">
+    <p class="meta" style="margin-bottom:0">Test</p>
+    <p class="claim">Remove any fragment. If nothing changes, it is a feed, not
+      a montage.</p>
+  </blockquote>
+
+  <p class="source">Ilya Kukulin, <em>Mashiny zashumevshego vremeni: kak
+    sovetskii montazh stal metodom neofitsial'noi kul'tury</em> [Machines of the
+    Noisy Time: How Soviet Montage Became a Method of Unofficial Culture]
+    (Moscow: Novoe literaturnoe obozrenie, 2015) — untranslated; cite the
+    Russian.</p>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ------------------------------------------------------ assignment -->
+
+<section id="assignment">
+  <h2>Assignment</h2>
+  <p class="meta">Part two · 8 min · one assignment for all four groups</p>
+
+  <p>Assemble a sixty-second reel advertising an exhibition about the capture of
+    Berlin at the Karlshorst museum.</p>
+
+  <h3>Material — pre-cut shots from</h3>
+
+  <div class="frag">
+    <p class="title">⏵ <em>Berlin</em></p>
+    <p class="imprint">(1945), dir. Yuli Raizman — best documentary, Cannes 1946</p>
+  </div>
+
+  <div class="frag">
+    <p class="title">⏵ <em>The True Glory</em></p>
+    <p class="imprint">(1945), dir. Garson Kanin and Carol Reed — Academy Award</p>
+  </div>
+
+  <p>One Soviet film, one British-American. The folder of pre-cut shots is
+    handed out at the start of part two.</p>
+
+  <p>The condition in which the whole conflict of the first hour is lodged:</p>
+
+  <blockquote class="pull">
+    <p class="claim">The reel must work as advertising — and at the same time
+      not lie about the material.</p>
+  </blockquote>
+
+  <p>Advertising by definition wants to stitch things together and to convince,
+    which makes it constructive by definition. The task is to hold both
+    requirements at once. How exactly, each group decides for itself.</p>
+
+  <h3>What each group brings out of the breakout</h3>
+  <ul>
+    <li>a sequence of exactly 60 seconds</li>
+    <li>an explanation of the choice of shots and of that structure</li>
+  </ul>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- --------------------------------------------------------- shotcut -->
+
+<section id="shotcut">
+  <h2>Shotcut</h2>
+  <p class="meta">Part two · 7 min · screen share</p>
+
+  <p>Only five actions:</p>
+
+  <p><code>import a folder</code> → <code>drag onto the timeline</code> →
+    <code>trim the edges of a clip</code> → <code>reorder</code> →
+    <code>play back from the timeline</code></p>
+
+  <blockquote class="pull">
+    <p class="claim">Today there is exactly one expressive means — order and
+      duration.</p>
+  </blockquote>
+
+  <p><a href="https://www.shotcut.org">shotcut.org</a> — free, open source,
+    Windows / macOS / Linux.</p>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- -------------------------------------------------------- breakouts -->
+
+<section id="breakouts">
+  <h2>Breakouts</h2>
+  <p class="meta">Part two · 25 min · 4 groups</p>
+
+  <p>One editor per room shares their screen. The other three watch the
+    timeline and argue about junctures, not about shots.</p>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ------------------------------------------------------- screenings -->
+
+<section id="screenings">
+  <h2>Screenings</h2>
+  <p class="meta">Part two · 15 min · 3 minutes per group</p>
+
+  <table>
+    <thead><tr><th>Step</th><th>What</th><th class="num">Sec</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Screening</td><td class="num">60</td></tr>
+      <tr><td>2</td><td>The room speaks first — <span class="dim">what did you
+        see? Who did you feel yourself to be? At what moment did you realise
+        something was being proved to you?</span></td><td class="num">60</td></tr>
+      <tr><td>3</td><td>The group explains its intention</td><td class="num">60</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ----------------------------------------------------------- close -->
+
+<section id="close">
+  <h2>Close</h2>
+  <p class="meta">Part two · 5 min</p>
+
+  <ol>
+    <li>Which of the four reels would the museum publish on its own channels —
+      and what does that choice say about the institution?</li>
+    <li>Which of them would you watch to the end in a feed — and does that match
+      the first answer?</li>
+  </ol>
+</section>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ------------------------------------------------------- checklist -->
+
+<section id="checklist">
+  <h2>Editing decision checklist</h2>
+  <p class="meta">Before fixing a sequence, answer in writing</p>
+
+  <dl class="spec">
+    <dt>1 · Question</dt>
+    <dd>What question organises the work?</dd>
+
+    <dt>2 · This fragment</dt>
+    <dd>Why this particular fragment? What does it do that no other element
+      does?</dd>
+
+    <dt>3 · The juncture</dt>
+    <dd>What connection does this juncture create — causality, contrast,
+      analogy, rhyme, repetition, doubt, rupture?</dd>
+
+    <dt>4 · Found or made</dt>
+    <dd>Did this connection exist in the material, or am I creating it? Can I
+      justify it, and do I indicate the degree of my own certainty?</dd>
+
+    <dt>5 · What disappears</dt>
+    <dd>What does my structure make invisible? Which voice, context or source
+      disappears when I cut things down?</dd>
+
+    <dt>6 · The viewer</dt>
+    <dd>What position does the viewer occupy? Do they receive an explanation,
+      investigate alongside me, experience, judge — or come up against the
+      impossibility of a conclusion?</dd>
+  </dl>
+
+  <details>
+    <summary>Carry-over from module 03</summary>
+    <ol>
+      <li>Module 03 asked what you did to a single shot and whether you could
+        write it down. This one asks what you did between two shots — and a
+        juncture leaves no metadata.</li>
+      <li>If a caption over one frame is a claim, what is a cut between two?</li>
+      <li>Which of the six answers above would you actually publish next to the
+        reel?</li>
+    </ol>
+  </details>
+</section>
+
+<footer>
+  <p><strong>Fragments:</strong> none of the four films is hosted here. The
+  players embed copies published elsewhere; in-points and out-points are ours.
+  Check every one before the session — third-party copies move, go private and
+  disappear, and an embed can be blocked where a direct link still opens.</p>
+  <p><strong>Assignment material:</strong> pre-cut shots from <em>Berlin</em>
+  (1945, Raizman) and <em>The True Glory</em> (1945, Kanin and Reed),
+  distributed as <code>M04-Group-Work.zip</code>.</p>
+  <p>MemoActs 2026 · Module 04 · facilitator Konstantin Koryagin</p>
+</footer>
+
+</main>
+</body>
+</html>
