@@ -1,0 +1,1159 @@
+<!--
+  Module 06 — the whole module as one page.
+
+  Same design as Module 05 (725 px document column, white reference sheets,
+  Vollkorn / Onest / Roboto Mono), but every dimension is multiplied by --k
+  so the page is legible in a Zoom screenshare. --k is the only thing to
+  change: 1 gives the exact Module 05 page, 1.75 is the value set here.
+  If the room still cannot read it, raise --k in :root and reload.
+
+  Self-contained: one HTML file, one fonts/ directory, relative paths only.
+  The practice timer is plain JavaScript, no network, no dependencies.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 06 — Production Process: Visual Effects and Sound Design</title>
+<style>
+/* Self-hosted, latin subsets, SIL OFL — see fonts/OFL.txt.
+   The page needs no network at all. */
+@font-face { font-family: "Vollkorn";    src: url("fonts/vollkorn-400.woff2")    format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Vollkorn";    src: url("fonts/vollkorn-500.woff2")    format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Onest";       src: url("fonts/onest-400.woff2")       format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Onest";       src: url("fonts/onest-500.woff2")       format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Roboto Mono"; src: url("fonts/roboto-mono-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Roboto Mono"; src: url("fonts/roboto-mono-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+
+:root {
+  /* Screenshare scale. 1 = Module 05 at its original size. */
+  --k: 1.75;
+
+  --bg:    #F6F3EE;
+  --panel: #FFFFFF;
+  --ink:   #11110F;
+  --muted: #777672;
+  --rule:  #C9C7C1;
+  --wash:  #ECEAE6;
+  --mark:  #2F4A8C;   /* blue pencil — selection, here and in the contents */
+  --live:  #A03A28;   /* the running timer, and nothing else */
+
+  --serif: "Vollkorn", Georgia, serif;
+  --sans:  "Onest", Arial, sans-serif;
+  --mono:  "Roboto Mono", ui-monospace, monospace;
+
+  --col:   calc(725px * var(--k));   /* full sheet width, including the gutter */
+  --text:  calc(705px * var(--k));   /* text column */
+  --label: calc(118px * var(--k));   /* first grid column: labels, times */
+  --gut:   calc( 20px * var(--k));   /* the gutter itself */
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--sans);
+  font-size: calc(10px * var(--k));
+  line-height: 1.28;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  width: 100%;
+  padding: 0 0 calc(110px * var(--k)) var(--gut);
+}
+
+header.masthead,
+nav.runlist,
+section,
+footer {
+  width: var(--text);
+  max-width: var(--text);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* ---------------------------------------------------------- masthead */
+
+header.masthead {
+  margin: 0 0 calc(36px * var(--k));
+  padding: 0;
+  border: 0;
+}
+
+.topline {
+  height: calc(69px * var(--k));
+  display: grid;
+  grid-template-columns: var(--label) 1fr auto;
+  align-items: start;
+  padding-top: calc(34px * var(--k));
+  font-family: var(--mono);
+  font-size: calc(6px * var(--k));
+  line-height: 1;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.topline span:last-child { justify-self: end; padding-right: 1px; }
+
+.module-label {
+  margin: 0 0 calc(26px * var(--k));
+  text-align: center;
+  font-family: var(--sans);
+  font-size: calc(12px * var(--k));
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+h1 {
+  width: calc(690px * var(--k));
+  max-width: 100%;
+  margin: 0 0 calc(28px * var(--k));
+  font-family: var(--serif);
+  font-size: calc(31px * var(--k));
+  font-weight: 400;
+  line-height: .98;
+  letter-spacing: -.018em;
+}
+
+.standfirst {
+  width: calc(680px * var(--k));
+  max-width: 100%;
+  margin: 0;
+  font-family: var(--sans);
+  font-size: calc(9px * var(--k));
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+/* ---------------------------------------------------------- contents */
+
+nav.runlist {
+  width: var(--col);
+  max-width: var(--col);
+  margin: 0 0 calc(92px * var(--k)) calc(-1 * var(--gut));
+  padding: calc(24px * var(--k)) var(--gut) calc(22px * var(--k));
+  border: 0;
+  background: var(--panel);
+  display: grid;
+  grid-template-columns: var(--label) 1fr;
+  align-items: start;
+}
+
+nav.runlist p {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: calc(7px * var(--k));
+  line-height: 1.15;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+nav.runlist ol { margin: 0; padding: 0; list-style: none; }
+nav.runlist li { margin: 0 0 calc(2px * var(--k)); }
+
+nav.runlist a,
+nav.runlist a:visited {
+  display: inline-block;
+  padding: calc(1px * var(--k)) calc(5px * var(--k));
+  margin-left: calc(-5px * var(--k));
+  transition: background-color .12s, color .12s;
+  font-family: var(--mono);
+  font-size: calc(7px * var(--k));
+  line-height: 1.16;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------- sections */
+
+section { margin-bottom: calc(72px * var(--k)); scroll-margin-top: calc(12px * var(--k)); }
+
+h2 {
+  margin: 0 0 calc(10px * var(--k));
+  font-family: var(--serif);
+  font-size: calc(29px * var(--k));
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -.018em;
+}
+
+h2 em { font-style: normal; }
+
+.meta {
+  margin: 0 0 calc(20px * var(--k));
+  font-family: var(--mono);
+  font-size: calc(6px * var(--k));
+  line-height: 1;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+h3 {
+  margin: 0;
+  padding: calc(9px * var(--k)) 0 calc(5px * var(--k));
+  font-family: var(--mono);
+  font-size: calc(7px * var(--k));
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+section > p:not(.meta):not(.caption) {
+  width: 100%;
+  margin: 0 0 calc(12px * var(--k));
+  font-family: var(--sans);
+  font-size: calc(9px * var(--k));
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+section > p.lede {
+  font-size: calc(11px * var(--k));
+  line-height: 1.4;
+}
+
+section > ul,
+section > ol {
+  margin: 0 0 calc(12px * var(--k));
+  padding-left: 0;
+  list-style-position: inside;
+  font-family: var(--sans);
+  font-size: calc(9px * var(--k));
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+section > ul li,
+section > ol li { margin-bottom: calc(3px * var(--k)); }
+li::marker { color: var(--muted); }
+strong { font-weight: 500; }
+em.q { font-style: italic; }
+
+/* ------------------------------------------------------------ sheets */
+
+.sheet {
+  width: var(--col);
+  margin: 0 0 calc(26px * var(--k)) calc(-1 * var(--gut));
+  padding: 0 calc(10px * var(--k)) calc(12px * var(--k)) var(--gut);
+  background: var(--panel);
+}
+
+.sheet h3 { padding-top: calc(10px * var(--k)); }
+.sheet table { width: calc(100% + var(--gut)); margin: 0 0 0 calc(-1 * var(--gut)); }
+.sheet > *:last-child { margin-bottom: 0; }
+
+.sheet ol,
+.sheet ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: row;
+}
+
+.sheet ol li,
+.sheet ul li {
+  counter-increment: row;
+  display: grid;
+  grid-template-columns: var(--label) 1fr;
+  width: calc(100% + var(--gut));
+  margin: 0 0 0 calc(-1 * var(--gut));
+  padding: calc(4px * var(--k)) calc(6px * var(--k)) calc(4px * var(--k)) var(--gut);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--k));
+  line-height: 1.25;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.sheet ol li::before { content: counter(row); color: var(--muted); }
+.sheet ul li::before { content: attr(data-key); color: var(--muted); }
+.sheet li:last-child { border-bottom: 0; }
+.sheet li.here,
+.sheet li.here::before { background: var(--mark); color: var(--bg); }
+.sheet li.here { border-bottom-color: var(--mark); }
+.sheet li:not(.here) { color: var(--muted); }
+
+/* ------------------------------------------------------------ tables */
+
+table {
+  width: var(--col);
+  max-width: var(--col);
+  margin: 0 0 calc(26px * var(--k)) calc(-1 * var(--gut));
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--panel);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--k));
+  line-height: 1.25;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+th, td {
+  padding: calc(4px * var(--k)) calc(6px * var(--k));
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+  font-family: var(--mono);
+  font-size: calc(8px * var(--k));
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+th:first-child, td:first-child { padding-left: var(--gut); }
+
+thead th {
+  padding-top: calc(10px * var(--k));
+  padding-bottom: calc(7px * var(--k));
+  font-weight: 500;
+  color: var(--muted);
+}
+
+tbody td.k { color: var(--ink); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.here td,
+tr.here td.k { background: var(--mark); color: var(--bg); border-bottom-color: var(--mark); }
+tbody tr:last-child td { border-bottom: 0; }
+
+/* -------------------------------------------------------------- spec */
+
+dl.spec {
+  width: var(--text);
+  max-width: var(--text);
+  margin: 0 0 calc(24px * var(--k));
+  padding: calc(10px * var(--k)) calc(10px * var(--k)) calc(10px * var(--k)) 0;
+  display: grid;
+  grid-template-columns: var(--label) 1fr;
+  gap: calc(5px * var(--k)) 0;
+  background: var(--panel);
+}
+
+dl.spec .spec-row { display: contents; }
+
+dl.spec dt {
+  margin: 0;
+  padding-left: var(--gut);
+  font-family: var(--mono);
+  font-size: calc(6px * var(--k));
+  line-height: 1.3;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+dl.spec dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: calc(7px * var(--k));
+  line-height: 1.35;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------- media */
+
+.caption {
+  width: var(--text);
+  max-width: var(--text);
+  margin: calc(7px * var(--k)) 0 calc(12px * var(--k));
+  font-family: var(--mono);
+  font-size: calc(6px * var(--k));
+  line-height: 1.3;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------- code, links */
+
+code {
+  padding: 0 2px;
+  background: var(--wash);
+  font-family: var(--mono);
+  font-size: .95em;
+  letter-spacing: .04em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+pre {
+  width: var(--text);
+  max-width: var(--text);
+  margin: 0 0 calc(12px * var(--k));
+  padding: calc(10px * var(--k)) calc(12px * var(--k));
+  overflow-x: auto;
+  background: var(--panel);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--k));
+  line-height: 1.6;
+  letter-spacing: .02em;
+  color: var(--ink);
+}
+
+pre .c { color: var(--muted); }
+
+a, a:visited { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--rule); }
+nav.runlist a, nav.runlist a:visited { border-bottom: 0; }
+
+a:hover, a:focus { color: var(--ink); border-bottom-color: var(--ink); outline: none; }
+nav.runlist a:hover,
+nav.runlist a:focus,
+nav.runlist a.current {
+  background: var(--mark);
+  color: var(--bg);
+  outline: none;
+}
+
+.here { color: var(--ink); }
+
+/* -------------------------------------------------------------- timer */
+
+.timer {
+  width: var(--col);
+  max-width: var(--col);
+  margin: 0 0 calc(26px * var(--k)) calc(-1 * var(--gut));
+  padding: calc(18px * var(--k)) var(--gut) calc(16px * var(--k));
+  background: var(--panel);
+}
+
+.timer .clock {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: calc(64px * var(--k));
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.timer.running .clock { color: var(--live); }
+.timer.done .clock    { color: var(--live); }
+
+.timer .bar {
+  height: calc(4px * var(--k));
+  margin: calc(12px * var(--k)) 0 calc(10px * var(--k));
+  background: var(--wash);
+}
+
+.timer .bar > i {
+  display: block;
+  width: 0%;
+  height: 100%;
+  background: var(--live);
+  transition: width .3s linear;
+}
+
+.timer .controls {
+  display: flex;
+  gap: calc(6px * var(--k));
+  align-items: center;
+  margin: 0 0 calc(12px * var(--k));
+}
+
+.timer button {
+  appearance: none;
+  cursor: pointer;
+  padding: calc(6px * var(--k)) calc(12px * var(--k));
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: calc(8px * var(--k));
+  font-weight: 500;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: background-color .12s, color .12s, border-color .12s;
+}
+
+.timer button:hover,
+.timer button:focus { background: var(--mark); border-color: var(--mark); color: var(--bg); outline: none; }
+.timer button[disabled] { opacity: .35; cursor: default; }
+.timer button[disabled]:hover { background: var(--bg); border-color: var(--rule); color: var(--ink); }
+
+.timer .hint {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: calc(6px * var(--k));
+  line-height: 1.3;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.timer table { margin-bottom: calc(10px * var(--k)); background: transparent; }
+.timer table tr.now td,
+.timer table tr.now td.k { background: var(--live); color: var(--bg); border-bottom-color: var(--live); }
+.timer table tr.past td,
+.timer table tr.past td.k { color: var(--rule); }
+
+/* -------------------------------------------------------- discussion */
+
+details {
+  width: var(--text);
+  max-width: var(--text);
+  margin: calc(20px * var(--k)) 0 0;
+  padding: calc(7px * var(--k)) 0 0;
+  border-top: 1px solid var(--rule);
+}
+
+summary {
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--mono);
+  font-size: calc(7px * var(--k));
+  line-height: 1;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "+ "; }
+details[open] summary::before { content: "\2212 "; }
+summary:hover { color: var(--ink); }
+
+details ol {
+  margin-top: calc(8px * var(--k));
+  padding-left: 0;
+  list-style-position: inside;
+  font-family: var(--mono);
+  font-size: calc(7px * var(--k));
+  line-height: 1.45;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+details ol li { margin-bottom: calc(4px * var(--k)); }
+
+/* ------------------------------------------------------------ footer */
+
+footer {
+  padding-top: calc(10px * var(--k));
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: calc(6px * var(--k));
+  line-height: 1.35;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+footer p { margin: 0 0 calc(5px * var(--k)); }
+footer strong { color: var(--ink); font-weight: 400; }
+
+/* ------------------------------------------------------------ mobile */
+
+@media (max-width: 1400px) {
+  :root { --k: 1.2; }
+}
+
+@media (max-width: 900px) {
+  :root { --k: 1; }
+
+  main { padding-left: 14px; padding-right: 14px; }
+
+  header.masthead,
+  section,
+  footer,
+  .caption,
+  dl.spec,
+  details,
+  pre { width: 100%; max-width: 100%; margin-left: 0; }
+
+  nav.runlist,
+  .sheet,
+  .timer,
+  table {
+    width: calc(100% + 28px);
+    max-width: none;
+    margin-left: -14px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  table { padding: 0; }
+  th:first-child, td:first-child { padding-left: 14px; }
+
+  nav.runlist { grid-template-columns: 1fr; }
+  nav.runlist p { margin-bottom: 8px; }
+
+  h1 { width: 100%; font-size: 26px; }
+  .standfirst { width: 100%; }
+  .topline { grid-template-columns: 1fr 1fr auto; }
+
+  .sheet ol li,
+  .sheet ul li { grid-template-columns: 74px 1fr; }
+  dl.spec { grid-template-columns: 1fr; gap: 0; }
+  dl.spec dt { padding-left: 20px; padding-top: 6px; }
+  dl.spec dd { padding-left: 20px; padding-bottom: 4px; }
+
+  .timer .clock { font-size: 54px; }
+}
+</style>
+</head>
+<body>
+<main>
+
+<header class="masthead">
+  <div class="topline">
+    <span>MEMO ACTS 2026</span>
+    <span>ONLINE INTENSIVE</span>
+    <span>02.09</span>
+  </div>
+  <p class="module-label">MODULE 06</p>
+  <h1>Production Process: Visual Effects and Sound Design</h1>
+  <p class="standfirst">
+    Tonight you edit. Forty minutes of demonstration, thirty minutes in which
+    every one of you builds the first fifteen seconds of your own reel, ten to
+    export it, and twenty to look at several of them together. Everything on
+    this page exists to protect that thirty-minute block — it is the only part
+    of the evening that cannot be moved to a consultation.
+  </p>
+</header>
+
+<nav class="runlist">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#where">Where this sits</a></li>
+    <li><a href="#ready">Before we start</a></li>
+    <li><a href="#demo">Demonstration</a></li>
+    <li><a href="#practice">Practice — 30 minutes</a></li>
+    <li><a href="#export">Export and submission</a></li>
+    <li><a href="#screening">Screening and feedback</a></li>
+    <li><a href="#homework">Homework</a></li>
+  </ol>
+</nav>
+
+<!-- ------------------------------------------------------------- where -->
+
+<section id="where">
+  <h2>Where this sits</h2>
+  <p class="meta">18:00 · 10 min</p>
+
+  <div class="sheet">
+  <h3>Creator's workflow</h3>
+  <ol>
+    <li>Idea and the topic</li>
+    <li>Research to collect and verify materials</li>
+    <li>Decide how to present the document</li>
+    <li>Write a screenplay and record the voiceover</li>
+    <li>Assemble the visuals with tools that fit you</li>
+    <li class="here">Polish: subtitles, visual effects, sound design — you are here</li>
+    <li>Pre-publishing screening and evaluation</li>
+  </ol>
+  </div>
+
+  <div class="sheet">
+  <h3>Schedule</h3>
+  <table>
+    <tbody>
+      <tr><td class="k">14.08</td><td>01 Introduction and Finding the Focus</td></tr>
+      <tr><td class="k">18.08</td><td>02 Research Phase — AI-powered or AI-distorted</td></tr>
+      <tr><td class="k">21.08</td><td>03 Ethics and Techniques of Intervening in Archival Footage</td></tr>
+      <tr><td class="k">25.08</td><td>04 Editing as a Way of Thinking Through a Fragmented Reality</td></tr>
+      <tr><td class="k">27.08</td><td>05 Tools Implementation: Choose What Works or Build Your Own</td></tr>
+      <tr><td class="k">28.08–01.09</td><td>Consultations, 30 min per group</td></tr>
+      <tr class="here"><td class="k">02.09</td><td>06 Production Process: Visual Effects and Sound Design — today</td></tr>
+      <tr><td class="k">03.09–06.09</td><td>Consultation, 60 min</td></tr>
+      <tr><td class="k">07.09</td><td>07 Final Screening and Wrap Up</td></tr>
+      <tr><td class="k">21–27.09</td><td>Berlin workshop · 16 places</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Module 05 ended with a claim: the tool does not make the film, the script
+    and the order do. Tonight is the test of that claim. Every one of you is in
+    a different editor and every one of you is building from the same three
+    things — a script, a set of verified images, a read. If the claim holds, the
+    fifteen seconds will differ by decision and not by software.</p>
+
+  <div class="sheet">
+  <h3>Tonight</h3>
+  <table>
+    <tbody>
+      <tr><td class="k">18:00</td><td>Arrival, where we are, what tonight produces</td></tr>
+      <tr><td class="k">18:10</td><td>Demonstration — the edit built from scratch, questions taken as they come</td></tr>
+      <tr><td class="k">18:50</td><td>Practice — your own fifteen seconds, tutors on call</td></tr>
+      <tr><td class="k">19:20</td><td>Export and upload</td></tr>
+      <tr><td class="k">19:30</td><td>Screening — around five videos, voluntary</td></tr>
+      <tr><td class="k">19:50</td><td>Next steps, close</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ------------------------------------------------------------- ready -->
+
+<section id="ready">
+  <h2>Before we start</h2>
+  <p class="meta">18:05 · 5 min · checked out loud, once</p>
+
+  <p class="lede">Three files, on your own machine, not in a browser tab. If one
+    of them is missing, say so now — a tutor will get you to a workable state
+    during the demonstration, not during the practice block.</p>
+
+  <div class="sheet">
+  <h3>What you need open</h3>
+  <ul>
+    <li data-key="1">Script — uploaded to the shared Google Drive folder</li>
+    <li data-key="2">Are.na board — at least 10 images or clips, downloaded to your device</li>
+    <li data-key="3">Music — one track from a free library, downloaded. Voluntary</li>
+    <li data-key="4">Editor — installed, opens your files, exports 1080×1920 at 30 fps</li>
+  </ul>
+  </div>
+
+  <p>Downloaded means downloaded. An Are.na board that lives online is a
+    reference, not material — the practice block has no time in it for
+    fetching images one at a time.</p>
+
+  <h3>Where the music comes from</h3>
+
+  <p>Free libraries: <a href="https://pixabay.com/music/">Pixabay Music</a>,
+    <a href="https://freemusicarchive.org">Free Music Archive</a>, Ende.
+    Choose something that fits the mood of your piece rather than something you
+    like on its own. Note the track name and the licence as you download — the
+    credits will need both.</p>
+
+  <div class="sheet">
+  <h3>Carried over from Module 05</h3>
+  <table>
+    <tbody>
+      <tr>
+        <td class="k">Built-in assets</td>
+        <td>music, sounds, fonts and stickers bundled inside an editor are licensed for use inside that app. Keep them out of the final mix — the reel is published under the museum's name and the funder's</td>
+      </tr>
+      <tr>
+        <td class="k">Tonight</td>
+        <td>the demonstration is in CapCut because it is the fastest thing to watch. Every move shown has an equivalent in Shotcut, Resolve and Kdenlive, and the techniques are what you are being asked to learn — not the buttons</td>
+      </tr>
+      <tr>
+        <td class="k">Sound</td>
+        <td>take it from a CC0 source and write down where it came from</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- -------------------------------------------------------------- demo -->
+
+<section id="demo">
+  <h2>Demonstration</h2>
+  <p class="meta">18:10 · 40 min · built from scratch, questions taken as they come</p>
+
+  <p>An empty project to an exported file, in order, with nothing skipped.
+    Interrupt when something happens too fast — this is the block where that is
+    free.</p>
+
+  <div class="sheet">
+  <h3>What gets shown, in this order</h3>
+  <table>
+    <thead><tr><th>Step</th><th>What is actually being decided</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="k">Audio and subtitles</td>
+        <td>the read lands first and everything else is measured against it. Subtitles are typed from the script you already have — not recognised from the audio, so no name, rank or date can be misspelt</td>
+      </tr>
+      <tr>
+        <td class="k">Photos and footage</td>
+        <td>which image stands with which sentence. This is the one decision the software cannot make for you</td>
+      </tr>
+      <tr>
+        <td class="k">Motion and animation</td>
+        <td>slow zoom, pan, push. How much movement an image's pixels can carry before it softens — an archival scan has a ceiling and the ceiling is visible</td>
+      </tr>
+      <tr>
+        <td class="k">Effects</td>
+        <td>glitch, grain, light leaks, transitions. Which of them carry a claim about the material and which are decoration</td>
+      </tr>
+      <tr>
+        <td class="k">Sound design</td>
+        <td>ambience under the voice, accents on cuts, the music bed and where it ducks. Where the sound does the persuading instead of the image</td>
+      </tr>
+      <tr>
+        <td class="k">Details that raise quality</td>
+        <td>cutting on the sentence and not on the beat, leaving silence, safe margins for captions on a vertical frame, consistent headroom, the export preset</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="lede">Watch what is being decided, not which menu it lives in. You
+    will be doing this in your own editor thirty minutes from now, and the menu
+    will be somewhere else.</p>
+</section>
+
+<!-- ---------------------------------------------------------- practice -->
+
+<section id="practice">
+  <h2>Practice — 30 minutes</h2>
+  <p class="meta">18:50 · 30 min · your own editor · tutors on call</p>
+
+  <p class="lede">Fully edit the first fifteen seconds of your video, from your
+    script, with images from your board. More than fifteen seconds if the time
+    allows. Not polished — legible. The point is to show you can do each of the
+    six things that were just demonstrated.</p>
+
+  <div class="timer" id="practiceTimer">
+    <p class="clock" id="clock">30:00</p>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="controls">
+      <button type="button" id="btnStart">Start</button>
+      <button type="button" id="btnPause" disabled>Pause</button>
+      <button type="button" id="btnReset" disabled>Reset</button>
+    </div>
+
+    <table>
+      <thead><tr><th>Left</th><th>Phase</th><th>Done by the end of it</th></tr></thead>
+      <tbody id="phases">
+        <tr data-from="30" data-to="25">
+          <td class="k">30–25</td>
+          <td class="k">Set up</td>
+          <td>Voiceover on the timeline, project set to 1080×1920 at 30 fps, images imported</td>
+        </tr>
+        <tr data-from="25" data-to="18">
+          <td class="k">25–18</td>
+          <td class="k">Structure</td>
+          <td>Images placed against the first fifteen seconds of the read. Subtitles typed in from the script</td>
+        </tr>
+        <tr data-from="18" data-to="11">
+          <td class="k">18–11</td>
+          <td class="k">Motion</td>
+          <td>Movement on every image. Nothing pushed past what its pixels carry</td>
+        </tr>
+        <tr data-from="11" data-to="6">
+          <td class="k">11–6</td>
+          <td class="k">Effects and sound</td>
+          <td>Effects where they mean something. Ambience, accents, the music bed under the voice</td>
+        </tr>
+        <tr data-from="6" data-to="0">
+          <td class="k">6–0</td>
+          <td class="k">Render</td>
+          <td>Export started. At zero, whatever is on the timeline is what gets exported</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="hint">Space starts and pauses · R resets · The clock is shared, the phases are a guide</p>
+  </div>
+
+  <p>Ask for a tutor at any point. Say what you are stuck on rather than
+    sharing your screen and waiting — the block is thirty minutes for everyone
+    at once.</p>
+
+  <div class="sheet">
+  <h3>Your fifteen seconds must contain</h3>
+  <ul>
+    <li data-key="—">Subtitles</li>
+    <li data-key="—">A background and visual elements — images and/or video</li>
+    <li data-key="—">Motion or animation on the images</li>
+    <li data-key="—">Effects, and filters if you want them</li>
+    <li data-key="—">Sound design</li>
+    <li data-key="—">Background music · voluntary</li>
+    <li data-key="—">A finished export</li>
+  </ul>
+  </div>
+
+  <p>If you finish early, extend past fifteen seconds rather than polishing what
+    you have. Length now is worth more to you than finish — the polish pass is
+    what the week between this module and the final screening is for.</p>
+</section>
+
+<!-- ------------------------------------------------------------ export -->
+
+<section id="export">
+  <h2>Export and submission</h2>
+  <p class="meta">19:20 · 10 min</p>
+
+  <dl class="spec">
+    <div class="spec-row"><dt>Resolution</dt><dd>1080 × 1920 px</dd></div>
+    <div class="spec-row"><dt>Aspect ratio</dt><dd>9:16</dd></div>
+    <div class="spec-row"><dt>Format</dt><dd>MP4 · H.264</dd></div>
+    <div class="spec-row"><dt>Frame rate</dt><dd>30 fps</dd></div>
+    <div class="spec-row"><dt>Length</dt><dd>15 seconds minimum</dd></div>
+    <div class="spec-row"><dt>File name</dt><dd>surname_m06.mp4</dd></div>
+  </dl>
+
+  <div class="sheet">
+  <h3>Two destinations, and they are different</h3>
+  <table>
+    <tbody>
+      <tr>
+        <td class="k">MemoActs Drive</td>
+        <td>your personal folder. Required, from everyone, tonight. This is the submission</td>
+      </tr>
+      <tr>
+        <td class="k">Telegram group</td>
+        <td>only if you are willing to have your piece screened and discussed in the next twenty minutes. Voluntary</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Start the export before you tidy anything. A render that is still running
+    at 19:30 is fine; a render that was never started is not.</p>
+</section>
+
+<!-- --------------------------------------------------------- screening -->
+
+<section id="screening">
+  <h2>Screening and feedback</h2>
+  <p class="meta">19:30 · 20 min · around five videos, voluntary</p>
+
+  <div class="sheet">
+  <h3>Per video</h3>
+  <ul>
+    <li data-key="0:15">it plays — no introduction from the author</li>
+    <li data-key="1 MIN">the author says what they were trying to do</li>
+    <li data-key="2 MIN">response — one tutor leads</li>
+  </ul>
+  </div>
+
+  <h3>What the response stays on</h3>
+
+  <ul>
+    <li>Whether the images are placed against the lines they belong to, or merely in sequence.</li>
+    <li>Whether the movement was chosen for the image or applied to all of them at once.</li>
+    <li>Where the sound is doing work the picture is not, and whether that was decided.</li>
+    <li>Which effect would be missed if it were removed.</li>
+  </ul>
+
+  <p>Fifteen seconds is a short thing to have made and a fair thing to be
+    judged on, because everyone made theirs under the same clock. Nothing said
+    here is about the finished film — it is about what to do in the next five
+    days.</p>
+</section>
+
+<!-- ---------------------------------------------------------- homework -->
+
+<section id="homework">
+  <h2>Homework</h2>
+  <p class="meta">Deadline: 18:00 CEST, 7 September</p>
+
+  <h3>1 — Compile your content on Hotglue</h3>
+
+  <p>Create a page on <a href="https://hotglue.me/">hotglue.me</a> and upload
+    your materials there: a storyboard, or the full video based on your script
+    if you managed to edit it.</p>
+
+  <h3>2 — Compile a list of sources</h3>
+
+  <p>Attach a brief document alongside the file. For every piece of media used —
+    image, video, audio — specify its source.</p>
+
+  <h3>3 — Prepare a question for the consultation</h3>
+
+  <p>The session between this module and the final screening takes place on
+    3–6 September and lasts sixty minutes. Come with any issue you were unable
+    to resolve this evening. It is the last session with a tutor before the
+    screening on 7 September.</p>
+
+  <p>The criteria you are assessed against were set out in Module 05 and have
+    not changed.</p>
+</section>
+
+<footer>
+  <p><strong>Preparation:</strong> script on the shared Drive, an Are.na board
+  of at least ten downloaded images, one downloaded music track. Everything
+  local before 18:00.</p>
+  <p><strong>Sound and music:</strong> free libraries only — Pixabay Music,
+  Free Music Archive, Ende. Built-in editor assets stay out of the final mix.</p>
+  <p>MemoActs 2026 · Module 06 · 02.09.2026</p>
+</footer>
+
+</main>
+
+<script>
+/* Contents follows the reading position. Nothing else on the page moves. */
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll("nav.runlist a"));
+  var sections = links.map(function (a) {
+    return { link: a, el: document.getElementById(a.getAttribute("href").slice(1)) };
+  }).filter(function (s) { return s.el; });
+
+  if (!sections.length) return;
+
+  var current = null;
+
+  function update() {
+    var line = window.scrollY + window.innerHeight * 0.3;
+    var atEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+    var pick = atEnd ? sections[sections.length - 1] : null;
+
+    if (!atEnd) {
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].el.offsetTop <= line) pick = sections[i];
+      }
+    }
+
+    var link = pick ? pick.link : null;
+    if (link === current) return;
+    if (current) current.classList.remove("current");
+    if (link) link.classList.add("current");
+    current = link;
+  }
+
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  update();
+})();
+
+/* The practice clock. Counts 30 minutes down from a wall-clock reading, so it
+   stays right if the tab is backgrounded during a screenshare. */
+(function () {
+  var TOTAL   = 30 * 60 * 1000;
+  var box     = document.getElementById("practiceTimer");
+  var clock   = document.getElementById("clock");
+  var bar     = document.getElementById("bar");
+  var start   = document.getElementById("btnStart");
+  var pause   = document.getElementById("btnPause");
+  var reset   = document.getElementById("btnReset");
+  var rows    = Array.prototype.slice.call(document.querySelectorAll("#phases tr"));
+  var title   = document.title;
+
+  if (!box || !clock) return;
+
+  var remaining = TOTAL;   /* ms left when not running */
+  var endsAt    = null;    /* wall-clock ms when running */
+  var tick      = null;
+
+  function left() {
+    return endsAt === null ? remaining : Math.max(0, endsAt - Date.now());
+  }
+
+  function mmss(ms) {
+    var t = Math.ceil(ms / 1000);
+    var m = Math.floor(t / 60);
+    var s = t % 60;
+    return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  function paint() {
+    var ms = left();
+    var minsLeft = ms / 60000;
+
+    clock.textContent = mmss(ms);
+    bar.style.width = (100 * (1 - ms / TOTAL)).toFixed(2) + "%";
+
+    rows.forEach(function (tr) {
+      var from = parseFloat(tr.getAttribute("data-from"));
+      var to   = parseFloat(tr.getAttribute("data-to"));
+      var now  = minsLeft <= from && minsLeft > to;
+      var past = minsLeft <= to;
+      tr.classList.toggle("now", now && endsAt !== null);
+      tr.classList.toggle("past", past);
+    });
+
+    document.title = endsAt === null ? title : mmss(ms) + " · " + title;
+
+    if (ms <= 0 && endsAt !== null) finish();
+  }
+
+  function run() {
+    if (endsAt !== null) return;
+    endsAt = Date.now() + remaining;
+    box.classList.add("running");
+    box.classList.remove("done");
+    start.disabled = true;
+    pause.disabled = false;
+    reset.disabled = false;
+    tick = setInterval(paint, 200);
+    paint();
+  }
+
+  function hold() {
+    if (endsAt === null) return;
+    remaining = left();
+    endsAt = null;
+    clearInterval(tick);
+    box.classList.remove("running");
+    start.disabled = false;
+    pause.disabled = true;
+    start.textContent = "Resume";
+    paint();
+  }
+
+  function finish() {
+    clearInterval(tick);
+    endsAt = null;
+    remaining = 0;
+    box.classList.remove("running");
+    box.classList.add("done");
+    start.disabled = true;
+    pause.disabled = true;
+    reset.disabled = false;
+    clock.textContent = "00:00";
+    bar.style.width = "100%";
+    document.title = "TIME · " + title;
+    rows.forEach(function (tr) { tr.classList.remove("now"); tr.classList.add("past"); });
+  }
+
+  function clear() {
+    clearInterval(tick);
+    endsAt = null;
+    remaining = TOTAL;
+    box.classList.remove("running", "done");
+    start.disabled = false;
+    pause.disabled = true;
+    reset.disabled = true;
+    start.textContent = "Start";
+    document.title = title;
+    rows.forEach(function (tr) { tr.classList.remove("now", "past"); });
+    paint();
+  }
+
+  start.addEventListener("click", run);
+  pause.addEventListener("click", hold);
+  reset.addEventListener("click", clear);
+
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target && e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea" || e.metaKey || e.ctrlKey || e.altKey) return;
+
+    if (e.code === "Space" || e.key === " ") {
+      e.preventDefault();
+      if (endsAt === null) { if (remaining > 0) run(); } else hold();
+    } else if (e.key === "r" || e.key === "R") {
+      e.preventDefault();
+      clear();
+    }
+  });
+
+  paint();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+Fonts in this directory are used under the SIL Open Font License, Version 1.1.
+
+  Vollkorn     — Friedrich Althausen.        https://github.com/FAlthausen/Vollkorn-Typeface
+  Onest        — Nikita Bukhryakov et al.    https://github.com/simenson-studio/onest
+  Roboto Mono  — Christian Robertson, Google https://github.com/googlefonts/robotomono
+
+Files are the latin subsets packaged by Fontsource (fontsource.org), taken from
+the upstream Google Fonts releases. Full licence text:
+
+  https://openfontlicense.org/open-font-license-official-text/
+
+Under the OFL these files may be bundled, embedded and redistributed with this
+page. They may not be sold on their own. Reserved Font Names must not be used
+for modified versions.
